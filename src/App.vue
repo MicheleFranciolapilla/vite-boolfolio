@@ -2,15 +2,19 @@
 // Importazione dello store (state management)
   import { store } from "./store"
   import axios from "axios";
+  import Comp_Header from "./components/Comp_Header.vue";
   export default{
     name        : "App",
-    components  : {},
+    components  : 
+    {
+      Comp_Header
+    },
     data()
     {
       return {
                 projects  : [],
                 api_url   : 'http://127.0.0.1:8000'
-            }
+      }
     },
     created()
     {},
@@ -33,7 +37,9 @@
 </script>
 
 <template>
-  <h1 class="text-black bg-info">hello world</h1>
+  <div id="front_end">
+    <Comp_Header/>
+  </div>
 </template>
 
 <style scoped lang="scss">
