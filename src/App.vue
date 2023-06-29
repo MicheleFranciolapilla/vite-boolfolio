@@ -14,9 +14,7 @@
     data()
     {
       return {
-                projects        : [],
-                api_url         : 'http://127.0.0.1:8000',
-                backup_img_path : "../public/img/backup_img.png"
+                store
       }
     },
     created()
@@ -29,10 +27,10 @@
     {
       axios_call()
       {
-        axios.get(`${this.api_url}/api/projects`).then( response =>
+        axios.get(`${this.store.api_url}/api/projects`).then( response =>
         {
-          this.projects = response.data.projects;
-          console.log(this.projects);
+          this.store.projects = response.data.projects;
+          console.log(this.store.projects);
         });
       }
     }
@@ -43,10 +41,7 @@
   <div id="front_end">
     <Comp_Header/>
     <main>
-      <Comp_Projects 
-        :backup_img = "backup_img_path" 
-        :projects_collection = "projects"
-      />
+      <Comp_Projects/>
     </main>
   </div>
 </template>

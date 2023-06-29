@@ -1,18 +1,28 @@
 <script>
+    import { store } from "../store";
+    import Comp_Single_Project from "./Comp_Single_Project.vue";
     export default
     {
-        name    : "Comp_Projects",
-        props   : ['backup_img', 'projects_collection'],
+        name        : "Comp_Projects",
+        components  :
+        {
+            Comp_Single_Project
+        },
+        data()
+        {
+            return {
+                store
+            }
+        }
     }
 </script>
 
 <template>
     <div id="projects_collection">
-        <div class="card"
-         v-for="(project, index) in projects_collection"
+        <div
+         v-for="(single_project, index) in store.projects"
          :key="index">
-            <img :src="backup_img" alt="">
-            <h5>{{ project.title }}</h5>
+            <Comp_Single_Project :project = "single_project" />
         </div>
     </div>    
 </template>
