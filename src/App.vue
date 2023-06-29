@@ -3,17 +3,20 @@
   import { store } from "./store"
   import axios from "axios";
   import Comp_Header from "./components/Comp_Header.vue";
+  import Comp_Projects from "./components/Comp_Projects.vue";
   export default{
     name        : "App",
     components  : 
     {
-      Comp_Header
+      Comp_Header,
+      Comp_Projects
     },
     data()
     {
       return {
-                projects  : [],
-                api_url   : 'http://127.0.0.1:8000'
+                projects        : [],
+                api_url         : 'http://127.0.0.1:8000',
+                backup_img_path : "../public/img/backup_img.png"
       }
     },
     created()
@@ -39,6 +42,12 @@
 <template>
   <div id="front_end">
     <Comp_Header/>
+    <main>
+      <Comp_Projects 
+        :backup_img = "backup_img_path" 
+        :projects_collection = "projects"
+      />
+    </main>
   </div>
 </template>
 
