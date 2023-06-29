@@ -1,39 +1,14 @@
 <script>
-// Importazione dello store (state management)
-  import { store } from "./store"
-  import axios from "axios";
-  import Comp_Header from "./components/Comp_Header.vue";
-  import Comp_Projects from "./components/Comp_Projects.vue";
-  export default{
+  import Comp_Header from './components/Comp_Header.vue';
+  import Comp_Footer from './components/Comp_Footer.vue';
+  export default
+  {
     name        : "App",
     components  : 
-    {
-      Comp_Header,
-      Comp_Projects
-    },
-    data()
-    {
-      return {
-                store
-      }
-    },
-    created()
-    {},
-    mounted()
-    {
-      this.axios_call();
-    },
-    methods:
-    {
-      axios_call()
-      {
-        axios.get(`${this.store.api_url}/api/projects`).then( response =>
-        {
-          this.store.projects = response.data.projects;
-          console.log(this.store.projects);
-        });
-      }
-    }
+                  {
+                    Comp_Header,
+                    Comp_Footer
+                  },
   }
 </script>
 
@@ -41,13 +16,13 @@
   <div id="front_end">
     <Comp_Header/>
     <main>
-      <Comp_Projects/>
+      <RouterView></RouterView>
     </main>
+    <Comp_Footer/>
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
     // Uso del foglio di stile scss
     @use "./assets/style/main.scss" as *;
-
 </style>

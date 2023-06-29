@@ -1,7 +1,7 @@
 <script>
     export default
     {
-        name    : "Comp_Header",
+        name    : "Comp_Footer",
         data()
         {
             return {
@@ -12,15 +12,10 @@
 </script>
 
 <template>
-    <header class="fixed-top">
+    <footer>
 
-    </header>
+    </footer>
 </template>
 
 <style scoped lang="scss">
-    header
-    {
-        height: $header_height;
-        z-index: 999;
-    }
 </style>
