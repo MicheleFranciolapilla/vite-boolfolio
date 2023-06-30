@@ -2,3 +2,14 @@
 @import "./scss_partials/_variables.scss";
 @import "./scss_partials/_mixin.scss";
 @import "../../../node_modules/bootstrap/scss/bootstrap.scss";
+
+
+ul
+{
+    list-style: none;
+}
+
+a
+{
+    text-decoration: none;
+}

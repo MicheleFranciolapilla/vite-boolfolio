@@ -25,4 +25,10 @@
 <style lang="scss">
     // Uso del foglio di stile scss
     @use "./assets/style/main.scss" as *;
+    main
+    {
+      position: relative;
+      z-index: 1;
+      margin-top: $header_height;
+    }
 </style>
