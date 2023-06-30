@@ -41,16 +41,17 @@
                                                     item_dd_ref     :   'projects_dropdown',
                                                     item_in_pages   :   [
                                                                             'home'
-                                                                        ]
-                                                },
-                                                {
-                                                    item_id         :   3,
-                                                    item_name       :   'Tutti',
-                                                    item_type       :   'dd_route',
-                                                    item_to         :   'projects',
-                                                    item_dd_ref     :   'projects_dropdown',
-                                                    item_in_pages   :   [
-                                                                            'home'
+                                                                        ],
+                                                    item_children   :   [
+                                                                            {
+                                                                                item_id         :   3,
+                                                                                item_name       :   'Tutti',
+                                                                                item_type       :   'route',
+                                                                                item_to         :   'projects',
+                                                                                active_in_pages :   [
+                                                                                                        'home'
+                                                                                                    ]
+                                                                            }
                                                                         ]
                                                 },
                                                 {
@@ -69,12 +70,22 @@
         {
             list_item_class_binder(item)
             {
-                if (item.item_type == "dd_route")
+                if (item.item_type == "dd_child")
                     return "";
                 let li_classes = "nav-item";
                 if (item.item_type == "dd")
                     li_classes += " dropdown";
                 return li_classes;
+            },
+
+            link_class_binder(item)
+            {
+                if (item.item_type == "dd_child")
+                    return "dropdown-item";
+                let link_classes = "nav-link";
+                if (item.item_type == "dd")
+                    link_classes += " dropdown-toggle";
+                return link_classes;
             },
 
             is_menu_item_in_page(item)
@@ -107,25 +118,73 @@
                          v-for="(item) in menu_items" 
                          :key="item.item_id"
                          :class="list_item_class_binder(item)">
-                            <a 
-                             v-if="is_menu_item_in_page(item) && (current_item == 'js')" 
-                             v-on:click="item.item_js_method" 
-                             href="#"
-                             class="nav-link">
-                                {{ item.item_name }}
-                            </a>
-                            <a 
-                             v-else-if="is_menu_item_in_page(item) && (current_item == 'anchor')" 
-                             :href="item.item_to"
-                             class="nav-link">
-                                {{ item.item_name }}
-                            </a>
-                            
+                            <div v-if="is_menu_item_in_page(item)">
+                                <a 
+                                 v-if="(current_item == 'js')" 
+                                 v-on:click="item.item_js_method" 
+                                 href="#"
+                                 :class="link_class_binder(item)">
+                                    {{ item.item_name }}
+                                </a>
+                                <a 
+                                 v-else-if="(current_item == 'anchor')" 
+                                 :href="item.item_to"
+                                 :class="link_class_binder(item)">
+                                    {{ item.item_name }}
+                                </a>
+                                <div v-else-if="(current_item == 'dd')">
+                                    <a 
+                                     href="#" 
+                                     :class="link_class_binder(item)" 
+                                     :id="item.item_dd_ref" 
+                                     role="button" 
+                                     data-bs-toggle="dropdown" 
+                                     aria-expanded="false">
+                                        {{ item.item_name }}
+                                    </a>
+                                    <ul class="dropdown-menu" :aria-labelledby="item.item_dd_ref">
+                                        <li 
+                                         v-for="sub_item in item.item_children"
+                                         :key="sub_item.item_id">
+                                            <router-link 
+                                             v-if="sub_item.item_type == 'route'" 
+                                             :to="{ name : sub_item.item_to }" 
+                                             class="dropdown-item"
+                                             :class="(sub_item.active_in_pages.includes(store.current_page)) ? ('disabled') : ('')">
+                                                {{ sub_item.item_name }}
+                                            </router-link>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <router-link 
+                                 v-else-if="(current_item == 'route')"
+                                 :to="{ name : item.item_to}"
+                                 :class="link_class_binder(item)">
+                                    {{ item.item_name }}
+                                </router-link>
+                            </div>
                         </li>
                     </ul>
+                    <form class="d-flex">
+                        <input class="form-control me-2" type="search" placeholder="Cerca testo ..." aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Cerca</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+    </header>
+</template>
 
+<style scoped lang="scss">
+    // Uso del foglio di stile scss
+    @use "../assets/style/main.scss" as *;
 
-
+    header
+    {
+        height: $header_height;
+        z-index: 999;
+    }
+</style>
 
                     <!-- <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
@@ -151,23 +210,3 @@
                             <a :href="abc" class="nav-link">Login</a>
                         </li>
                     </ul> -->
-                    <form class="d-flex">
-                        <input class="form-control me-2" type="search" placeholder="Cerca testo ..." aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit">Cerca</button>
-                    </form>
-                </div>
-            </div>
-        </nav>
-    </header>
-</template>
-
-<style scoped lang="scss">
-    // Uso del foglio di stile scss
-    @use "../assets/style/main.scss" as *;
-
-    header
-    {
-        height: $header_height;
-        z-index: 999;
-    }
-</style>
