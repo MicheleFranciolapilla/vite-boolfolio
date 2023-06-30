@@ -7,60 +7,84 @@
         {
             return  {
                         store,
-                        menu_items  :   [
-                                            {
-                                                // Indice dell'item
-                                                item_id         :   0,
-                                                // Label dell'item
-                                                item_name       :   'Home',
-                                                // Tipologia di item
-                                                item_type       :   'route',
-                                                // Rotta di atterraggio
-                                                item_to         :   'home', 
-                                                // Array con tutte le pagine in cui l'item è presente
-                                                item_in_pages   :   [
-                                                                    ]
-                                            },
-                                            {
-                                                item_id         :   1,
-                                                item_name       :   'About',
-                                                item_type       :   'js',
-                                                item_js_method()    {},
-                                                item_in_pages   :   [
-                                                                        'home'
-                                                                    ]
-                                            },
-                                            {
-                                                item_id         :   2,
-                                                item_name       :   'Progetti',
-                                                item_type       :   'dd',
-                                                item_dd_ref     :   'projects_dropdown',
-                                                item_in_pages   :   [
-                                                                        'home'
-                                                                    ]
-                                            },
-                                            {
-                                                item_id         :   3,
-                                                item_name       :   'Tutti',
-                                                item_type       :   'dd_route',
-                                                item_to         :   'projects',
-                                                item_dd_ref     :   'projects_dropdown',
-                                                item_in_pages   :   [
-                                                                        'home'
-                                                                    ]
-                                            },
-                                            {
-                                                item_id         :   10,
-                                                item_name       :   'Login / Registrazione',
-                                                item_type       :   'anchor',
-                                                item_to         :   store.api_url_root,
-                                                item_in_pages   :   [
-                                                                        'home'
-                                                                    ]
-                                            }
-                                        ],
+                        current_item    :   null,
+                        menu_items      :   [
+                                                {
+                                                    // Indice dell'item
+                                                    item_id         :   0,
+                                                    // Label dell'item
+                                                    item_name       :   'Home',
+                                                    // Tipologia di item
+                                                    item_type       :   'route',
+                                                    // Rotta di atterraggio
+                                                    item_to         :   'home', 
+                                                    // Array con tutte le pagine in cui l'item è presente
+                                                    item_in_pages   :   [
+                                                                            'home'
+                                                                        ]
+                                                },
+                                                {
+                                                    item_id         :   1,
+                                                    item_name       :   'About',
+                                                    item_type       :   'js',
+                                                    item_js_method()    {
+                                                                            store.about();
+                                                                        },
+                                                    item_in_pages   :   [
+                                                                            'home'
+                                                                        ]
+                                                },
+                                                {
+                                                    item_id         :   2,
+                                                    item_name       :   'Progetti',
+                                                    item_type       :   'dd',
+                                                    item_dd_ref     :   'projects_dropdown',
+                                                    item_in_pages   :   [
+                                                                            'home'
+                                                                        ]
+                                                },
+                                                {
+                                                    item_id         :   3,
+                                                    item_name       :   'Tutti',
+                                                    item_type       :   'dd_route',
+                                                    item_to         :   'projects',
+                                                    item_dd_ref     :   'projects_dropdown',
+                                                    item_in_pages   :   [
+                                                                            'home'
+                                                                        ]
+                                                },
+                                                {
+                                                    item_id         :   10,
+                                                    item_name       :   'Login / Registrazione',
+                                                    item_type       :   'anchor',
+                                                    item_to         :   store.api_url_root,
+                                                    item_in_pages   :   [
+                                                                            'home'
+                                                                        ]
+                                                }
+                                            ],
                     }
-        }
+        },
+        methods:
+        {
+            list_item_class_binder(item)
+            {
+                if (item.item_type == "dd_route")
+                    return "";
+                let li_classes = "nav-item";
+                if (item.item_type == "dd")
+                    li_classes += " dropdown";
+                return li_classes;
+            },
+
+            is_menu_item_in_page(item)
+            {
+                if (!item.item_in_pages.includes(this.store.current_page))
+                 return false;
+                this.current_item = item.item_type;
+                return true;
+            }
+        } 
     }
 </script>
 
@@ -81,15 +105,29 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li 
                          v-for="(item) in menu_items" 
-                         :key="item.item_id">
-
+                         :key="item.item_id"
+                         :class="list_item_class_binder(item)">
+                            <a 
+                             v-if="is_menu_item_in_page(item) && (current_item == 'js')" 
+                             v-on:click="item.item_js_method" 
+                             href="#"
+                             class="nav-link">
+                                {{ item.item_name }}
+                            </a>
+                            <a 
+                             v-else-if="is_menu_item_in_page(item) && (current_item == 'anchor')" 
+                             :href="item.item_to"
+                             class="nav-link">
+                                {{ item.item_name }}
+                            </a>
+                            
                         </li>
                     </ul>
 
 
 
 
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <!-- <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="#">Home</a>
                         </li>
@@ -112,7 +150,7 @@
                         <li class="nav-item">
                             <a :href="abc" class="nav-link">Login</a>
                         </li>
-                    </ul>
+                    </ul> -->
                     <form class="d-flex">
                         <input class="form-control me-2" type="search" placeholder="Cerca testo ..." aria-label="Search">
                         <button class="btn btn-outline-success" type="submit">Cerca</button>
