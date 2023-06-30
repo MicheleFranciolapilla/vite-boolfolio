@@ -1,4 +1,6 @@
 <script>
+  import axios from 'axios';
+  import { store } from './store';
   import Comp_Header from './components/Comp_Header.vue';
   import Comp_Footer from './components/Comp_Footer.vue';
   export default
@@ -9,6 +11,59 @@
                     Comp_Header,
                     Comp_Footer
                   },
+    data()
+    {
+      return  {
+                store
+              } 
+    },
+    mounted()
+    {
+      if (!this.store.categories_updated.executed)
+        this.get_categories();
+      if (!this.store.technologies_updated.executed)
+        this.get_technologies();
+    },
+    methods:
+    {
+      get_categories()
+      {
+        axios.get(`${this.store.api_url_root}/api/categories`)
+          .then( response =>
+          {
+            this.store.categories = response.data.categories;
+            this.store.categories_updated.success = true;
+            console.log(this.store.categories);
+          })
+          .catch( error =>
+          {
+            this.store.categories_updated.success = false;
+          });
+          this.store.categories_updated.executed = true;
+          let now = new Date();
+          this.store.categories_updated.date = now.toDateString();
+          this.store.categories_updated.time = now.toTimeString();
+      },
+
+      get_technologies()
+      {
+        axios.get(`${this.store.api_url_root}/api/technologies`)
+          .then( response =>
+          {
+            this.store.technologies = response.data.technologies;
+            this.store.technologies_updated.success = true;
+            console.log(this.store.technologies);
+          })
+          .catch( error =>
+          {
+            this.store.technologies_updated.success = false;
+          });
+          this.store.technologies_updated.executed = true;
+          let now = new Date();
+          this.store.technologies_updated.date = now.toDateString();
+          this.store.technologies_updated.time = now.toTimeString();      
+      }
+    }
   }
 </script>
 
