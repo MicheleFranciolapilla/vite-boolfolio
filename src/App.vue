@@ -15,7 +15,7 @@
 <template>
   <div id="front_end">
     <Comp_Header/>
-    <main id="main">
+    <main>
       <RouterView></RouterView>
     </main>
     <Comp_Footer/>

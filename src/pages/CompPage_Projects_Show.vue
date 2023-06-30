@@ -1,7 +1,7 @@
 <script>
     export default
     {
-        name    :   "CompPage_Project"
+        name    :   "CompPage_Projects_Show"
     }
 </script>
 

@@ -20,7 +20,7 @@
                                                     item_to         :   'home', 
                                                     // Array con tutte le pagine in cui l'item è presente
                                                     item_in_pages   :   [
-                                                                            'home'
+                                                                            'projects_index'
                                                                         ]
                                                 },
                                                 {
@@ -31,7 +31,8 @@
                                                                             store.about();
                                                                         },
                                                     item_in_pages   :   [
-                                                                            'home'
+                                                                            'home',
+                                                                            'projects_index'
                                                                         ]
                                                 },
                                                 {
@@ -40,16 +41,27 @@
                                                     item_type       :   'dd',
                                                     item_dd_ref     :   'projects_dropdown',
                                                     item_in_pages   :   [
-                                                                            'home'
+                                                                            'home',
+                                                                            'projects_index'
                                                                         ],
                                                     item_children   :   [
                                                                             {
                                                                                 item_id         :   3,
                                                                                 item_name       :   'Tutti',
                                                                                 item_type       :   'route',
-                                                                                item_to         :   'projects',
+                                                                                item_to         :   'projects_index',
                                                                                 active_in_pages :   [
                                                                                                         'home'
+                                                                                                    ]
+                                                                            },
+                                                                            {
+                                                                                item_id         :   4,
+                                                                                item_name       :   'Singolo progetto',
+                                                                                item_type       :   'route',
+                                                                                item_to         :   'projects_show',
+                                                                                active_in_pages :   [
+                                                                                                        'home',
+                                                                                                        'projects_index'
                                                                                                     ]
                                                                             }
                                                                         ]
@@ -60,7 +72,8 @@
                                                     item_type       :   'anchor',
                                                     item_to         :   store.api_url_root,
                                                     item_in_pages   :   [
-                                                                            'home'
+                                                                            'home',
+                                                                            'projects_index'
                                                                         ]
                                                 }
                                             ],
@@ -150,7 +163,7 @@
                                              v-if="sub_item.item_type == 'route'" 
                                              :to="{ name : sub_item.item_to }" 
                                              class="dropdown-item"
-                                             :class="(sub_item.active_in_pages.includes(store.current_page)) ? ('disabled') : ('')">
+                                             :class="(!sub_item.active_in_pages.includes(store.current_page)) ? ('disabled') : ('')">
                                                 {{ sub_item.item_name }}
                                             </router-link>
                                         </li>
@@ -185,28 +198,3 @@
         z-index: 999;
     }
 </style>
-
-                    <!-- <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
-                        </li>
-
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Dropdown
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
-                        </li>
-                        
-                        <li class="nav-item">
-                            <a :href="abc" class="nav-link">Login</a>
-                        </li>
-                    </ul> -->

@@ -1,23 +1,25 @@
 <script>
-    import { store } from "../store";
     export default
     {
-        name    : "Comp_Single_Project",
+        name    : "Comp_ViewOneProject",
         props   : ['project'],
         data()
         {
             return {
-                store
             }
         }
     }
 </script>
 
 <template>
-    <div class="card">
+    <h1>----------------------------------</h1>
+    <h3>{{ project.title }}</h3>
+    <h4>{{ project.description }}</h4>
+    <h1>----------------------------------</h1>
+    <!-- <div class="card">
         <img :src="(project.cover_img !== null ? project.cover_img : store.backup_img_path)" alt="">
         <h5>{{ project.title }}</h5>
-    </div>
+    </div> -->
 </template>
 
 <style scoped lang="scss">
