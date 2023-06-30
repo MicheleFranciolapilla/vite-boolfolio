@@ -38,6 +38,7 @@
           .catch( error =>
           {
             this.store.categories_updated.success = false;
+            // this.store.categories_updated.error_msg = 
           });
           this.store.categories_updated.executed = true;
           let now = new Date();

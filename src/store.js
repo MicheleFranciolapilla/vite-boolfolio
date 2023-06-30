@@ -8,14 +8,16 @@ export const store = reactive(
                                         executed    :   false,
                                         success     :   false, 
                                         date        :   "", 
-                                        time        :   "" 
+                                        time        :   "",
+                                        error_msg   :   "" 
                                     },
         technologies            :   [], 
         technologies_updated    :   {
                                         executed    :   false,
                                         success     :   false,
                                         date        :   "", 
-                                        time        :   "" 
+                                        time        :   "",
+                                        error_msg   :   ""
                                     },
         current_page            :   '',
         api_url_root            :   'http://127.0.0.1:8000',
@@ -24,6 +26,5 @@ export const store = reactive(
 
         about()
         {
-            document.getElementById("main").innerHTML="CLICCATO";
         },
     })

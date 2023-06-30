@@ -18,11 +18,11 @@
         created()
         {
             this.store.current_page = "projects_index";
-            this.axios_call();
+            this.get_projects();
         },
         methods:
         {
-            axios_call()
+            get_projects()
             {
                 axios.get(`${this.store.api_url_root}/api/projects`).then( response =>
                     {

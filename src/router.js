@@ -10,12 +10,18 @@ const router = createRouter(
                         {
                             path        :   '/',
                             name        :   'home',
-                            component   :   CompPage_Home 
+                            component   :   CompPage_Home,
+                            meta        :   {
+                                                title : 'My Projects | Home Page'
+                                            } 
                         },
                         {
                             path        :   '/projects',
                             name        :   'projects_index',
-                            component   :   CompPage_Projects_Index 
+                            component   :   CompPage_Projects_Index,
+                            meta        :   {
+                                                title : 'My Projects | All Projects'
+                                            }   
                         },
                         {
                             path        :   '/projects',
