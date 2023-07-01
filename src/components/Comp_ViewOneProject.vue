@@ -28,7 +28,7 @@
 </script>
 
 <template>
-    <div class="card p-1">
+    <div class="card p-1" :class="(just_img) ? ('card_relative') : ('')">
         <img 
          :src="set_image_path()" 
          :alt="(is_there_img) ? 'Immagine propria del progetto' : 'Immagine di backup'" 
@@ -36,6 +36,11 @@
         <div v-if="!just_img" class="card-body p-0 m-0">
             <h4 class="card-title">{{ project.title }}</h4>
             <h5 class="title_on_hover text-white bg-info p-2 border border-2 border-dark rounded-3">
+                Titolo del progetto: <h4 class="text-dark my-2">"{{ project.title }}"</h4>
+            </h5>
+        </div>
+        <div v-else>
+            <h5 class="card_on_hover text-white bg-info p-2 border border-2 border-dark rounded-3">
                 Titolo del progetto: <h4 class="text-dark my-2">"{{ project.title }}"</h4>
             </h5>
         </div>
@@ -49,6 +54,25 @@
         border: 3px solid black;
         border-radius: 0;
         cursor: pointer;
+        &.card_relative
+        {
+            position: relative;
+            .card_on_hover
+            {
+                position: absolute;
+                top: 50%;
+                left: 0;
+                display: none;
+            }
+            &:hover
+            {
+                .card_on_hover
+                {
+                    z-index: 998;
+                    display: block;
+                }
+            }
+        }
         img
         {
             border-radius: 0;
