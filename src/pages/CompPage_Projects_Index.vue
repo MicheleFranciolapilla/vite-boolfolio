@@ -60,7 +60,9 @@
     <Comp_ViewAllProjects 
      v-else-if="store.projects_updated.success"
      :collection = "store.projects" 
-     :items_per_row = "store.projects_per_row" />
+     :items_per_row = "store.projects_per_row"
+     :backup_img = "store.backup_img_path"
+     :api_url_root = "store.api_url_root" />
 
      <div 
       id="loading_failed" 
