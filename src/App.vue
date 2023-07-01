@@ -76,8 +76,8 @@
       <Comp_PageManager/>
     </div>
     <main class="row mx-0">
-      <!-- <section id="side_panel" class="col-1">
-      </section> -->
+      <section id="side_panel" class="col-1 ms-3 border border-3 border-info bg-light">
+      </section>
       <section id="router_views" class="col-9 px-5">
         <RouterView></RouterView>
       </section>
@@ -96,19 +96,17 @@
     main
     {
       padding-top: calc($header_height + $page_manager_h + $upper_gap);
-      border-bottom: 5px dashed black;
-      background-color: green;
+      background-image: linear-gradient(315deg, rgb(233, 155, 155) 33%, rgb(139, 62, 62) 66%, rgb(29, 36, 42));
       #side_panel
       {
-        border: 3px solid blue;
-        height: 75vh;
+        position: sticky;
+        top: calc($header_height + $page_manager_h + $upper_gap);
+        left: 0;
+        max-height: 65vh;
+        // background-color: $fixed_color;
         &:hover
         {
           display: none;
-        }
-        #inner_panel
-        {
-          top: 0;
         }
       }
       #router_views
