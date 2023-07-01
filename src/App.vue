@@ -2,6 +2,7 @@
   import axios from 'axios';
   import { store } from './store';
   import Comp_Header from './components/Comp_Header.vue';
+  import Comp_PageManager from './components/Comp_PageManager.vue';
   import Comp_Footer from './components/Comp_Footer.vue';
   export default
   {
@@ -9,6 +10,7 @@
     components  : 
                   {
                     Comp_Header,
+                    Comp_PageManager,
                     Comp_Footer
                   },
     data()
@@ -69,12 +71,14 @@
 
 <template>
   <div id="front_end">
-    <Comp_Header/>
-    <main class="row px-5">
-      <section id="side_panel" class="fixed col-1 border border-3 border-black me-5">
-        <h1>Sono il side panel</h1>
-      </section>
-      <section id="router_views" class="col-9">
+    <div id="fixed_top_components" class="fixed-top">
+      <Comp_Header/>
+      <Comp_PageManager/>
+    </div>
+    <main class="row mx-0">
+      <!-- <section id="side_panel" class="col-1">
+      </section> -->
+      <section id="router_views" class="col-9 px-5">
         <RouterView></RouterView>
       </section>
     </main>
@@ -85,15 +89,26 @@
 <style lang="scss">
     // Uso del foglio di stile scss
     @use "./assets/style/main.scss" as *;
+    #fixed_top_components
+    {
+      z-index: 999;
+    }
     main
     {
-      padding-top: calc($header_height + $upper_gap);
+      padding-top: calc($header_height + $page_manager_h + $upper_gap);
+      border-bottom: 5px dashed black;
+      background-color: green;
       #side_panel
       {
-        top: 0;
+        border: 3px solid blue;
+        height: 75vh;
         &:hover
         {
           display: none;
+        }
+        #inner_panel
+        {
+          top: 0;
         }
       }
       #router_views

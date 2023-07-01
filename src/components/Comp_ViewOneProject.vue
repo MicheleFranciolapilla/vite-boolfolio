@@ -22,27 +22,35 @@
                 else
                     img_path = this.backup_img;
                 return img_path;
+            },
+
+            show_full_title(from_card = false)
+            {
+                if (from_card === this.just_img)
+                {
+                    let full_title_viewer = document.getElementById("full_length_title");
+                    full_title_viewer.classList.remove("d-none");
+                    full_title_viewer.innerHTML = `Titolo completo: &nbsp &nbsp &nbsp<span class="text-white-50">${this.project.title}</span>`;
+                }
+            },
+
+            hide_full_title(from_card = false)
+            {
+                let full_title_viewer = document.getElementById("full_length_title");
+                full_title_viewer.classList.add("d-none");
             }
         }
     }
 </script>
 
 <template>
-    <div class="card p-1" :class="(just_img) ? ('card_relative') : ('')">
+    <div class="card p-1" @mousemove="show_full_title(true)" @mouseleave="hide_full_title(true)">
         <img 
          :src="set_image_path()" 
          :alt="(is_there_img) ? 'Immagine propria del progetto' : 'Immagine di backup'" 
          class="card-img-top">
         <div v-if="!just_img" class="card-body p-0 m-0">
-            <h4 class="card-title">{{ project.title }}</h4>
-            <h5 class="title_on_hover text-white bg-info p-2 border border-2 border-dark rounded-3">
-                Titolo del progetto: <h4 class="text-dark my-2">"{{ project.title }}"</h4>
-            </h5>
-        </div>
-        <div v-else>
-            <h5 class="card_on_hover text-white bg-info p-2 border border-2 border-dark rounded-3">
-                Titolo del progetto: <h4 class="text-dark my-2">"{{ project.title }}"</h4>
-            </h5>
+            <h4 class="card-title" @mousemove="show_full_title()" @mouseleave="hide_full_title()">{{ project.title }}</h4>
         </div>
     </div>
 </template>
@@ -54,25 +62,6 @@
         border: 3px solid black;
         border-radius: 0;
         cursor: pointer;
-        &.card_relative
-        {
-            position: relative;
-            .card_on_hover
-            {
-                position: absolute;
-                top: 50%;
-                left: 0;
-                display: none;
-            }
-            &:hover
-            {
-                .card_on_hover
-                {
-                    z-index: 998;
-                    display: block;
-                }
-            }
-        }
         img
         {
             border-radius: 0;
@@ -91,21 +80,6 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-            }
-            .title_on_hover
-            {
-                position: absolute;
-                top: 0;
-                left: 0;
-                display: none;
-            }
-            &:hover
-            {
-                .title_on_hover
-                {
-                    z-index: 998;
-                    display: block;
-                }
             }
         }
     }

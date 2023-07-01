@@ -113,7 +113,7 @@
 </script>
 
 <template>
-    <header class="fixed-top">
+    <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
                 <div id="nav_left" class="d-flex justify-content-center align-items-center column-gap-2 border border-1 border-dark ps-3">
@@ -195,6 +195,5 @@
     header
     {
         height: $header_height;
-        z-index: 999;
     }
 </style>
