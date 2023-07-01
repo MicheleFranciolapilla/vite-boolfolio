@@ -10,22 +10,41 @@
         },
         data()
         {
-            return {
+            return  {
+                        collection_gap : null
+                    }
+        },
+        methods:
+        {
+            calc_flex_gap()
+            {
+                this.collection_gap = `calc(4rem / ${this.items_per_row})`;
+                return this.collection_gap;
+            },
+
+            calc_card_width()
+            {
+                return `calc((100% - (${this.collection_gap} * (${this.items_per_row} - 1))) / ${this.items_per_row})`;
             }
         }
     }
 </script>
 
 <template>
-    <div id="projects_collection">
-        <Comp_ViewOneProject 
+    <div id="projects_collection" class="d-flex flex-wrap" :style="{ gap: calc_flex_gap() }">
+        <div 
          v-for="(collection_item, index) in collection" 
          :key="index" 
-         :project = "collection_item" />
+         :style="{ width: calc_card_width() }">
+            <Comp_ViewOneProject 
+             :project = "collection_item" />
+        </div>
     </div>
 </template>
 
 <style scoped lang="scss">
-    // Uso del foglio di stile scss
-    @use "../assets/style/main.scss" as *;
+    #projects_collection
+    {
+        width: calc(100%);
+    }
 </style>

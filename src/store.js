@@ -3,6 +3,13 @@ import { reactive } from "vue";
 export const store = reactive(
     {
         projects                :   [],
+        projects_updated        :   {
+                                        running     :   false,
+                                        success     :   false,
+                                        date        :   "",
+                                        time        :   "",
+                                        error_msg   :   "" 
+                                    },
         categories              :   [],
         categories_updated      :   {
                                         executed    :   false,
