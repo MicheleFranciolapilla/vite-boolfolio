@@ -73,9 +73,10 @@
   <div id="front_end">
     <div id="fixed_top_components" class="fixed-top">
       <Comp_Header/>
-      <Comp_PageManager/>
+      <Comp_PageManager v-if="store.current_page != 'home'" />
     </div>
-    <main class="row mx-0">
+    <main class="row mx-0" 
+     :class="(store.current_page == 'home') ? 'home_set' : ''">
       <section 
        v-if="store.side_panel_visible" 
        id="side_panel" 
@@ -100,6 +101,10 @@
     {
       padding-top: calc($header_height + $page_manager_h + $upper_gap);
       background-image: linear-gradient(315deg, rgb(233, 155, 155) 33%, rgb(139, 62, 62) 66%, rgb(29, 36, 42));
+      &.home_set
+      {
+        padding-top: calc($header_height + $upper_gap);
+      }
       #side_panel
       {
         position: sticky;
