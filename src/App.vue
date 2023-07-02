@@ -76,11 +76,12 @@
       <Comp_PageManager v-if="store.current_page != 'home'" />
     </div>
     <main class="row mx-0" 
-     :class="(store.current_page == 'home') ? 'home_set' : ''">
+     :class="(store.current_page == 'home') ? 'home_main' : ''">
       <section 
        v-if="store.side_panel_visible" 
        id="side_panel" 
-       class="col-1 ms-3 border border-3 border-info bg-light">
+       class="col-1 ms-3 border border-3 border-info bg-light"
+       :class="(store.current_page == 'home') ? 'home_panel' : ''">
       </section>
       <section id="router_views" class="col-9 px-5">
         <RouterView></RouterView>
@@ -100,8 +101,10 @@
     main
     {
       padding-top: calc($header_height + $page_manager_h + $upper_gap);
+      padding-bottom: calc($footer_height + $upper_gap);
+      min-height: 100vh;
       background-image: linear-gradient(315deg, rgb(233, 155, 155) 33%, rgb(139, 62, 62) 66%, rgb(29, 36, 42));
-      &.home_set
+      &.home_main
       {
         padding-top: calc($header_height + $upper_gap);
       }
@@ -111,6 +114,10 @@
         top: calc($header_height + $page_manager_h + $upper_gap);
         left: 0;
         max-height: 65vh;
+        &.home_panel
+        {
+          top: calc($header_height + $upper_gap);
+        }
       }
       #router_views
       {

@@ -40,12 +40,17 @@
         }
         #info_box
         {
+            max-width: calc(60%);
             height: 100%;
             display: flex;
             justify-content: flex-end;
             align-items: center;
             #full_length_title
             {
+                width: calc(100%);
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: clip;
                 height: 90%;
                 display: flex;
                 align-items: center;

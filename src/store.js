@@ -29,7 +29,7 @@ export const store = reactive(
         current_page            :   '',
         api_url_root            :   'http://127.0.0.1:8000',
         backup_img_path         :   "../public/img/backup_img.png",
-        projects_per_row        :   4, 
+        projects_per_row        :   5, 
         side_panel_visible      :   true,
 
         about()
