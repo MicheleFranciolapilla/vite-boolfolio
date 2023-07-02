@@ -20,18 +20,70 @@
             this.store.current_page = "projects_index";
             this.get_projects();
         },
+        mounted()
+        {
+            this.add_paging_events_listener();
+        },
+        beforeUnmount()
+        {
+            this.remove_paging_events_listener();
+        },
         methods:
         {
-            get_projects()
+            add_paging_events_listener()
             {
+                let btn_first = document.getElementById("btn_first_page");
+                btn_first.addEventListener("click", this.event_check);
+                let btn_prev = document.getElementById("btn_prev_page");
+                btn_prev.addEventListener("click", this.event_check);
+                let btn_next = document.getElementById("btn_next_page");
+                btn_next.addEventListener("click", this.event_check);
+                let btn_last = document.getElementById("btn_last_page");
+                btn_last.addEventListener("click", this.event_check);
+            },
+
+            remove_paging_events_listener()
+            {
+                let btn_first = document.getElementById("btn_first_page");
+                btn_first.removeEventListener("click", this.event_check);
+                let btn_prev = document.getElementById("btn_prev_page");
+                btn_prev.removeEventListener("click", this.event_check);
+                let btn_next = document.getElementById("btn_next_page");
+                btn_next.removeEventListener("click", this.event_check);
+                let btn_last = document.getElementById("btn_last_page");
+                btn_last.removeEventListener("click", this.event_check);
+            },
+
+            event_check()
+            {
+                if (this.store.paging_events.change_page)
+                {
+                    this.store.paging_events.change_page = false;
+                    console.log("richiesta nuova pagina");
+                    this.get_projects(this.store.paging_events.page_to_go);
+                }
+            },
+
+            get_projects(api_page_number = 1)
+            {
+                console.log("chiamata axios");
                 this.store.projects_updated.running = true;
-                axios.get(`${this.store.api_url_root}/api/projects`)
+                axios.get(`${this.store.api_url_root}/api/projects`,
+                    {
+                        params  :
+                        {
+                            page    :   api_page_number
+                        }
+                    })
                     .then( response =>
                         {
-                            this.store.projects = response.data.projects;
+                            this.store.projects = response.data.projects.data;
+                            this.store.api_paging_info.api_current_page = response.data.projects.current_page;
+                            this.store.api_paging_info.api_total_pages = response.data.projects.last_page;
+                            this.store.api_paging_info.api_total_projects = response.data.projects.total;
                             this.store.projects_updated.running = false;
                             this.store.projects_updated.success = true;
-                            console.log(this.store.projects);
+                            console.log("dati ricevuti da api",this.store.projects);
                         })
                     .catch( error =>
                         {
@@ -47,7 +99,6 @@
 </script>
 
 <template>
-
     <div 
      id="on_loading" 
      v-if="store.projects_updated.running">

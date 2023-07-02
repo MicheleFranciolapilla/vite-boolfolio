@@ -3,6 +3,7 @@
   import { store } from './store';
   import Comp_Header from './components/Comp_Header.vue';
   import Comp_PageManager from './components/Comp_PageManager.vue';
+  import Comp_SidePanel from './components/Comp_SidePanel.vue';
   import Comp_Footer from './components/Comp_Footer.vue';
   export default
   {
@@ -11,6 +12,7 @@
                   {
                     Comp_Header,
                     Comp_PageManager,
+                    Comp_SidePanel,
                     Comp_Footer
                   },
     data()
@@ -79,9 +81,10 @@
      :class="(store.current_page == 'home') ? 'home_main' : ''">
       <section 
        v-if="store.side_panel_visible" 
-       id="side_panel" 
+       id="side_panel_section" 
        class="col-1 ms-3 border border-3 border-info bg-light"
        :class="(store.current_page == 'home') ? 'home_panel' : ''">
+        <Comp_SidePanel />
       </section>
       <section id="router_views" class="col-9 px-5">
         <RouterView></RouterView>
@@ -108,12 +111,13 @@
       {
         padding-top: calc($header_height + $upper_gap);
       }
-      #side_panel
+      #side_panel_section
       {
         position: sticky;
         top: calc($header_height + $page_manager_h + $upper_gap);
         left: 0;
         max-height: 65vh;
+        align-self: flex-start;
         &.home_panel
         {
           top: calc($header_height + $upper_gap);

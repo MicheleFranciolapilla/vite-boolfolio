@@ -260,7 +260,7 @@
             {
                 padding-left: 1.5rem;
             }
-            .nav-link, .dropdown-item
+            .nav-link
             {
                 color: black !important;
                 &:hover
