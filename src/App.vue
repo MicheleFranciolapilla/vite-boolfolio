@@ -76,7 +76,10 @@
       <Comp_PageManager/>
     </div>
     <main class="row mx-0">
-      <section id="side_panel" class="col-1 ms-3 border border-3 border-info bg-light">
+      <section 
+       v-if="store.side_panel_visible" 
+       id="side_panel" 
+       class="col-1 ms-3 border border-3 border-info bg-light">
       </section>
       <section id="router_views" class="col-9 px-5">
         <RouterView></RouterView>
@@ -103,11 +106,6 @@
         top: calc($header_height + $page_manager_h + $upper_gap);
         left: 0;
         max-height: 65vh;
-        // background-color: $fixed_color;
-        &:hover
-        {
-          display: none;
-        }
       }
       #router_views
       {

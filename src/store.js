@@ -30,8 +30,16 @@ export const store = reactive(
         api_url_root            :   'http://127.0.0.1:8000',
         backup_img_path         :   "../public/img/backup_img.png",
         projects_per_row        :   4, 
+        side_panel_visible      :   true,
 
         about()
         {
+            console.log("Appena fatto!");
         },
+
+        toggle_bool(bool_var_ref)
+        {
+            console.log("toggling");
+            this[bool_var_ref] = !this[bool_var_ref];
+        }
     })

@@ -46,7 +46,7 @@
                                                                         ],
                                                     item_children   :   [
                                                                             {
-                                                                                item_id         :   3,
+                                                                                item_id         :   201,
                                                                                 item_name       :   'Tutti',
                                                                                 item_type       :   'route',
                                                                                 item_to         :   'projects_index',
@@ -55,10 +55,36 @@
                                                                                                     ]
                                                                             },
                                                                             {
-                                                                                item_id         :   4,
+                                                                                item_id         :   202,
                                                                                 item_name       :   'Singolo progetto',
                                                                                 item_type       :   'route',
                                                                                 item_to         :   'projects_show',
+                                                                                active_in_pages :   [
+                                                                                                        'home',
+                                                                                                        'projects_index'
+                                                                                                    ]
+                                                                            }
+                                                                        ]
+                                                },
+                                                {
+                                                    item_id         :   3,
+                                                    item_name       :   'Layout Pagina',
+                                                    item_type       :   'dd',
+                                                    item_dd_ref     :   'page_layout_dropdown',
+                                                    item_in_pages   :   [
+                                                                            'home',
+                                                                            'projects_index'
+                                                                        ],
+                                                    item_children   :   [
+                                                                            {
+                                                                                item_id         :   301,
+                                                                                bool_var_ref    :   'side_panel_visible',
+                                                                                name_if_true    :   "Nascondi pannello",
+                                                                                name_if_false   :   "Mostra pannello",
+                                                                                item_type       :   'toggler',
+                                                                                item_js_method()    {
+                                                                                                        store.toggle_bool("side_panel_visible");
+                                                                                                    },
                                                                                 active_in_pages :   [
                                                                                                         'home',
                                                                                                         'projects_index'
@@ -78,6 +104,17 @@
                                                 }
                                             ],
                     }
+        },
+        computed:
+        {
+            set_list_item() 
+            {
+                return (bool_var_ref, name_if_true, name_if_false) =>
+                    {
+                        let   var_ref = this.store[bool_var_ref];
+                        return var_ref ? name_if_true : name_if_false;
+                    };
+            }
         },
         methods:
         {
@@ -107,7 +144,20 @@
                  return false;
                 this.current_item = item.item_type;
                 return true;
-            }
+            },
+
+            check_toggler(item)
+            {
+                console.log("entrato......");
+                console.log(item.item_toggle.condition == true);
+                console.log(item.item_toggle.label_true);
+                console.log(item.item_toggle.label_false);
+
+                if (item.item_toggle.condition == true)
+                    return item.item_toggle.label_true;
+                else 
+                    return item.item_toggle.label_false;
+            }            
         } 
     }
 </script>
@@ -126,7 +176,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="collapse_btn">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ps-3">
                         <li 
                          v-for="(item) in menu_items" 
                          :key="item.item_id"
@@ -166,6 +216,15 @@
                                              :class="(!sub_item.active_in_pages.includes(store.current_page)) ? ('disabled') : ('')">
                                                 {{ sub_item.item_name }}
                                             </router-link>
+                                            <a 
+                                             v-else-if="sub_item.item_type == 'toggler'" 
+                                             v-on:click="sub_item.item_js_method" 
+                                             :id="`toggler${sub_item.item_id}`"
+                                             href="#"
+                                             class="dropdown-item"
+                                             :class="(!sub_item.active_in_pages.includes(store.current_page)) ? ('disabled') : ('')">
+                                                {{ set_list_item(sub_item.bool_var_ref, sub_item.name_if_true, sub_item.name_if_false) }}
+                                            </a>
                                         </li>
                                     </ul>
                                 </div>
@@ -195,5 +254,20 @@
     header
     {
         height: $header_height;
+        li
+        {
+            &.nav-item
+            {
+                padding-left: 1.5rem;
+            }
+            .nav-link, .dropdown-item
+            {
+                color: black !important;
+                &:hover
+                {
+                    color: blue !important;
+                }
+            }
+        }
     }
 </style>
