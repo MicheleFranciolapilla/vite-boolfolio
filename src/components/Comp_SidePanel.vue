@@ -28,7 +28,7 @@
         <div id="filters_block" class="d-flex justify-content-between align-items-start">
             <div id="categories_panel" class="ps-1">
                 <h6 class="text-start">Categoria:</h6>
-                <ul id="categories_list" class="d-flex flex-column align-items-start row-gap-2 px-2 py-1">
+                <ul v-if="store.categories.length != 0" id="categories_list" class="d-flex flex-column align-items-start row-gap-2 px-2 py-1">
                     <li>
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="category_filter" id="category_all"
@@ -60,21 +60,28 @@
                         </div>
                     </li>
                 </ul>
+                <div v-else>
+                    <span class="text-warning bg-danger p-2">Data error</span>
+                </div>
             </div>
             <div id="technologies_panel" class="pe-1">
                 <h6 class="text-start">Tecnologie:</h6>
-                <ul id="technologies_list" class="d-flex flex-column align-items-start row-gap-2 px-2 py-1">
+                <ul v-if="store.technologies.length != 0" id="technologies_list" class="d-flex flex-column align-items-start row-gap-2 px-2 py-1">
                     <li 
                      v-for="(item, index) in store.technologies"
                      :key="'technology__' + index">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" :id="`technology_${ item.name }`">
-                            <label class="form-check-label" :for="`technology_${ item.name }`">
+                            <input class="form-check-input me-3" type="checkbox" value="" :id="`technology_${ item.name }`">
+                            <label class="form-check-label position-relative" :for="`technology_${ item.name }`">
                                 <i :class="get_fa_classes(item.icon)"></i>
+                                <span class="name_on_hover text-info bg-dark px-3">{{ item.name }}</span>
                             </label>
                         </div>
                     </li>
                 </ul>
+                <div v-else>
+                    <span class="text-warning bg-danger p-2">Data error</span>
+                </div>
             </div>
         </div>
     </div>
@@ -107,6 +114,25 @@
                 #technologies_list
                 {
                     border: 2px solid red;
+                    .form-check-label
+                    {
+                        .name_on_hover
+                        {
+                            position: absolute;
+                            left: 125%;
+                            display: none;
+                            border: 2px solid yellowgreen;
+                            border-radius: 2px;
+                        }
+                        &:hover
+                        {
+                            cursor: pointer;
+                            .name_on_hover
+                            {
+                                display: inline-block;
+                            }
+                        }
+                    }
                 }
             }
         }
