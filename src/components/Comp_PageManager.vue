@@ -3,7 +3,7 @@
 
     export default
     {
-        name    : "Comp_Manager",
+        name    : "Comp_PageManager",
         data()
         {
             return  {
