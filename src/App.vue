@@ -42,10 +42,6 @@
           this.store.technologies_filter.push(true);
         }
       },
-
-
-
-
     }
   }
 </script>
@@ -56,7 +52,7 @@
       <Comp_Header/>
       <Comp_PageManager v-if="store.current_page != 'home'" />
     </div>
-    <!-- <main class="row mx-0" 
+    <main class="row mx-0" 
      :class="(store.current_page == 'home') ? 'home_main' : ''">
       <section 
        v-if="store.side_panel_visible && store.current_page == 'projects_index'" 
@@ -68,7 +64,7 @@
       <section id="router_views" class="col-8 px-5">
         <RouterView></RouterView>
       </section>
-    </main> -->
+    </main>
     <Comp_Footer/>
   </div>
 </template>

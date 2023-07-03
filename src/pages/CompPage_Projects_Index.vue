@@ -12,7 +12,6 @@
         {
             return  {
                         store,
-
                     }
         },
         created()
@@ -22,16 +21,6 @@
         },
         methods:
         {
-            event_check()
-            {
-                if (this.store.paging_events.change_page)
-                {
-                    this.store.paging_events.change_page = false;
-                    console.log("richiesta nuova pagina");
-                    this.axios_call_params.page = this.store.paging_events.page_to_go;
-                    this.get_projects();
-                }
-            },
 
             set_actual_categories_filter_value()
             {
