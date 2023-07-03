@@ -23,13 +23,27 @@
     },
     mounted()
     {
-      if (!this.store.categories_updated.executed)
-        this.get_categories();
-      if (!this.store.technologies_updated.executed)
-        this.get_technologies();
+      if (this.store.session_start)
+        this.initialize_data();
     },
     methods:
     {
+      initialize_data()
+      {
+        this.store.session_start = false;
+        this.get_categories();
+        this.get_technologies();
+      },
+
+      initialize_tech_filter()
+      {
+        this.store.technologies_filter = [];
+        for (let i = 0; i < this.store.technologies.length; i++)
+        {
+          this.store.technologies_filter.push(true);
+        }
+      },
+
       get_categories()
       {
         axios.get(`${this.store.api_url_root}/api/categories`)
@@ -47,11 +61,12 @@
         let now = new Date();
         this.store.categories_updated.date = now.toDateString();
         this.store.categories_updated.time = now.toTimeString();
+        this.categories_filter = -2;
       },
 
-      get_technologies()
+      async get_technologies()
       {
-        axios.get(`${this.store.api_url_root}/api/technologies`)
+        await axios.get(`${this.store.api_url_root}/api/technologies`)
           .then( response =>
             {
               this.store.technologies = response.data.technologies;
@@ -65,7 +80,8 @@
         this.store.technologies_updated.executed = true;
         let now = new Date();
         this.store.technologies_updated.date = now.toDateString();
-        this.store.technologies_updated.time = now.toTimeString();      
+        this.store.technologies_updated.time = now.toTimeString();  
+        this.initialize_tech_filter();
       }
     }
   }
@@ -80,7 +96,7 @@
     <main class="row mx-0" 
      :class="(store.current_page == 'home') ? 'home_main' : ''">
       <section 
-       v-if="store.side_panel_visible" 
+       v-if="store.side_panel_visible && store.current_page == 'projects_index'" 
        id="side_panel_section" 
        class="col-2 ms-3 border border-3 border-info bg-light p-0 py-2"
        :class="(store.current_page == 'home') ? 'home_panel' : ''">

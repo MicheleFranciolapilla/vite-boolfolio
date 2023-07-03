@@ -12,7 +12,10 @@
         data()
         {
             return  {
-                        store
+                        store,
+                        axios_call_params       :   {
+                                                        page    :   1 
+                                                    }
                     }
         },
         created()
@@ -40,6 +43,9 @@
                 btn_next.addEventListener("click", this.event_check);
                 let btn_last = document.getElementById("btn_last_page");
                 btn_last.addEventListener("click", this.event_check);
+                
+                let btn_filter = document.getElementById("btn_with_filters");
+                btn_filter.addEventListener("click", this.get_filtered_projects);
             },
 
             remove_paging_events_listener()
@@ -52,6 +58,9 @@
                 btn_next.removeEventListener("click", this.event_check);
                 let btn_last = document.getElementById("btn_last_page");
                 btn_last.removeEventListener("click", this.event_check);
+
+                let btn_filter = document.getElementById("btn_with_filters");
+                btn_filter.removeEventListener("click", this.get_filtered_projects);
             },
 
             event_check()
@@ -60,21 +69,55 @@
                 {
                     this.store.paging_events.change_page = false;
                     console.log("richiesta nuova pagina");
-                    this.get_projects(this.store.paging_events.page_to_go);
+                    this.axios_call_params.page = this.store.paging_events.page_to_go;
+                    this.get_projects();
                 }
             },
 
-            get_projects(api_page_number = 1)
+            set_actual_categories_filter_value()
+            {
+                let found_checked = false;
+                let index = 0;
+                do
+                {
+                    let id_str = "category" + index.toString();
+                    let current_id = document.getElementById(id_str); 
+                    if (current_id.checked)
+                    {
+                        found_checked = true;
+                        this.store.categories_filter = index;
+                    }
+                    index++;
+                } while ((!found_checked) && (index < this.store.categories.length));
+                if (!found_checked)
+                {
+                    if (document.getElementById("category-1").checked)
+                        this.store.categories_filter = -1;
+                    else
+                        this.store.categories_filter = -2;
+                }
+            },
+
+            get_filtered_projects()
+            {   this.set_actual_categories_filter_value();
+                let temp_params = { page : 1 };
+                if (this.store.categories_filter != -2)
+                {
+                    if (this.store.categories_filter == -1)
+                        temp_params.category_id = "";
+                    else
+                        temp_params.category_id = this.store.categories_filter + 1;
+                }
+                this.axios_call_params = temp_params;
+                this.get_projects();
+            },
+
+            get_projects()
             {
                 console.log("chiamata axios");
                 this.store.projects_updated.running = true;
-                axios.get(`${this.store.api_url_root}/api/projects`,
-                    {
-                        params  :
-                        {
-                            page    :   api_page_number
-                        }
-                    })
+                const params = this.axios_call_params;
+                axios.get(`${this.store.api_url_root}/api/projects`,{ params })
                     .then( response =>
                         {
                             this.store.projects = response.data.projects.data;

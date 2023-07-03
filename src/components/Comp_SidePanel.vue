@@ -31,9 +31,9 @@
                 <ul v-if="store.categories.length != 0" id="categories_list" class="d-flex flex-column align-items-start row-gap-2 px-2 py-1">
                     <li>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="category_filter" id="category_all"
+                            <input class="form-check-input" type="radio" name="category_filter" id="category-2"
                              :checked="store.categories_filter == -2">
-                            <label class="form-check-label" for="category_all">
+                            <label class="form-check-label" for="category-2">
                                 Tutte
                             </label>
                         </div>
@@ -43,18 +43,18 @@
                      :key="'category__' + index">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="category_filter" 
-                             :id="`category_${ item.name }`"
+                             :id="`category${ index }`"
                              :checked="index == store.categories_filter">
-                            <label class="form-check-label" :for="`category_${ item.name }`">
+                            <label class="form-check-label" :for="`category${ index }`">
                                 {{ item.name }}
                             </label>
                         </div>
                     </li>
                     <li>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="category_filter" id="category_null"
+                            <input class="form-check-input" type="radio" name="category_filter" id="category-1"
                              :checked="store.categories_filter == -1">
-                            <label class="form-check-label" for="category_null">
+                            <label class="form-check-label" for="category-1">
                                 Assente
                             </label>
                         </div>
@@ -71,7 +71,10 @@
                      v-for="(item, index) in store.technologies"
                      :key="'technology__' + index">
                         <div class="form-check">
-                            <input class="form-check-input me-3" type="checkbox" value="" :id="`technology_${ item.name }`">
+                            <input class="form-check-input me-3" type="checkbox" value="" 
+                             :id="`technology_${ item.name }`"
+                             :checked="store.technologies_filter[index]"
+                             v-on:change="store.technologies_filter[index] = !store.technologies_filter[index]">
                             <label class="form-check-label position-relative" :for="`technology_${ item.name }`">
                                 <i :class="get_fa_classes(item.icon)"></i>
                                 <span class="name_on_hover text-info bg-dark px-3">{{ item.name }}</span>
@@ -84,6 +87,7 @@
                 </div>
             </div>
         </div>
+        <button id="btn_with_filters" class="btn btn-primary" type="button">Applica filtri</button>
     </div>
 </template>
 
@@ -109,11 +113,11 @@
             {
                 h6
                 {
-                    color: red;
+                    color: orange;
                 } 
                 #technologies_list
                 {
-                    border: 2px solid red;
+                    border: 2px solid orange;
                     .form-check-label
                     {
                         .name_on_hover

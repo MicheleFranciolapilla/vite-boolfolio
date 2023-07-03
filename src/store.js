@@ -2,6 +2,7 @@
 import { reactive } from "vue";
 export const store = reactive(
     {
+        session_start           :   true,
         projects                :   [],
         projects_updated        :   {
                                         running     :   false,
@@ -29,7 +30,7 @@ export const store = reactive(
         current_page            :   '',
         api_url_root            :   'http://127.0.0.1:8000',
         api_paging_info         :   {
-                                        api_projects_per_page   :   10,
+                                        api_projects_per_page   :   8,
                                         api_current_page        :   1,
                                         api_total_pages         :   0,
                                         api_total_projects      :   0
@@ -41,8 +42,9 @@ export const store = reactive(
                                         change_page :   false,
                                         page_to_go  :   0
                                     },
-        // La variabile "categories_filter" contiene il valore di riferimento per la ricerca filtrata sulle categorie. Il valore "-2" indica "tutte" mentre "-1" consente una ricerca per "progetti senza categoria"
-        categories_filter       :   -2, 
+        // La variabile "categories_filter" contiene il valore di riferimento per la ricerca filtrata sulle categorie. Il valore "-2" indica "tutte" mentre "-1" consente una ricerca per "progetti senza categoria."
+        categories_filter       :   -2,
+        technologies_filter     :   [],
 
         about()
         {

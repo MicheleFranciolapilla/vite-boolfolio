@@ -47,18 +47,9 @@
                                                     item_children   :   [
                                                                             {
                                                                                 item_id         :   201,
-                                                                                item_name       :   'Tutti',
+                                                                                item_name       :   'Carica tutti i progetti',
                                                                                 item_type       :   'route',
                                                                                 item_to         :   'projects_index',
-                                                                                active_in_pages :   [
-                                                                                                        'home'
-                                                                                                    ]
-                                                                            },
-                                                                            {
-                                                                                item_id         :   202,
-                                                                                item_name       :   'Singolo progetto',
-                                                                                item_type       :   'route',
-                                                                                item_to         :   'projects_show',
                                                                                 active_in_pages :   [
                                                                                                         'home',
                                                                                                         'projects_index'
@@ -86,7 +77,6 @@
                                                                                                         store.toggle_bool("side_panel_visible");
                                                                                                     },
                                                                                 active_in_pages :   [
-                                                                                                        'home',
                                                                                                         'projects_index'
                                                                                                     ]
                                                                             }
