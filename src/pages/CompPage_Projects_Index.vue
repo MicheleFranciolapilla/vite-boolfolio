@@ -1,6 +1,5 @@
 <script>
-    import { store } from "../store";
-    import axios from "axios";
+    import { store } from "../AxiosStore";
     import Comp_ViewAllProjects from "../components/Comp_ViewAllProjects.vue";
     export default
     {
@@ -13,9 +12,7 @@
         {
             return  {
                         store,
-                        axios_call_params       :   {
-                                                        page    :   1 
-                                                    }
+
                     }
         },
         created()
