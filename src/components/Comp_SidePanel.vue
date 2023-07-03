@@ -11,6 +11,30 @@
         },
         methods:
         {
+            get_filtered_projects()
+            {
+                let filtering_radios = document.getElementsByName('category_filter');
+                let checked_i = -1;
+                for (let i = 0; i < filtering_radios.length; i++)
+                {
+                    if (filtering_radios[i].checked)
+                    {
+                        checked_i = i;
+                        break;
+                    }
+                }
+                let temp_params = { page : 1 };
+                if (checked_i != 0)
+                {
+                    if (checked_i == filtering_radios.length - 1)
+                        temp_params.category_id = "";
+                    else
+                        temp_params.category_id = checked_i;
+                }
+                this.store.axios_call_params = temp_params;
+                this.store.get_projects();
+            },
+
             get_fa_classes(icon_str)
             {
                 let quote_pos = icon_str.indexOf('"');
@@ -31,30 +55,30 @@
                 <ul v-if="store.categories.length != 0" id="categories_list" class="d-flex flex-column align-items-start row-gap-2 px-2 py-1">
                     <li>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="category_filter" id="category-2"
-                             :checked="store.categories_filter == -2">
-                            <label class="form-check-label" for="category-2">
+                            <input class="form-check-input" type="radio" name="category_filter" id="category_all"
+                             :checked="store.categories_filter == store.categories.length + 1">
+                            <label class="form-check-label" for="category_all">
                                 Tutte
                             </label>
                         </div>
                     </li>
                     <li 
                      v-for="(item, index) in store.categories"
-                     :key="'category__' + index">
+                     :key="'category_' + index + 1">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="category_filter" 
-                             :id="`category${ index }`"
-                             :checked="index == store.categories_filter">
-                            <label class="form-check-label" :for="`category${ index }`">
+                             :id="`category_${ index + 1}`"
+                             :checked="(index + 1) == store.categories_filter">
+                            <label class="form-check-label" :for="`category_${ index }`">
                                 {{ item.name }}
                             </label>
                         </div>
                     </li>
                     <li>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="category_filter" id="category-1"
-                             :checked="store.categories_filter == -1">
-                            <label class="form-check-label" for="category-1">
+                            <input class="form-check-input" type="radio" name="category_filter" id="category_0"
+                             :checked="store.categories_filter == 0">
+                            <label class="form-check-label" for="category_0">
                                 Assente
                             </label>
                         </div>
@@ -64,7 +88,7 @@
                     <span class="text-warning bg-danger p-2">Data error</span>
                 </div>
             </div>
-            <div id="technologies_panel" class="pe-1">
+            <!-- <div id="technologies_panel" class="pe-1">
                 <h6 class="text-start">Tecnologie:</h6>
                 <ul v-if="store.technologies.length != 0" id="technologies_list" class="d-flex flex-column align-items-start row-gap-2 px-2 py-1">
                     <li 
@@ -85,9 +109,9 @@
                 <div v-else>
                     <span class="text-warning bg-danger p-2">Data error</span>
                 </div>
-            </div>
+            </div> -->
         </div>
-        <button id="btn_with_filters" class="btn btn-primary" type="button">Applica filtri</button>
+        <button id="btn_with_filters" class="btn btn-primary" type="button" v-on:click="get_filtered_projects()">Applica filtri</button>
     </div>
 </template>
 

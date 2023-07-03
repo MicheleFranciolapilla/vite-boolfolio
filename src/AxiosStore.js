@@ -8,6 +8,8 @@ export const store = reactive(
         projects_load_running   :   false,
         projects_load_success   :   false,
         categories              :   [],
+        // Valori per categories_filter:  0 = nessuna categoria; n+1 (n = categories.length) = tutte (default); 1......n come id in tabella
+        categories_filter       :   -1,
         technologies            :   [], 
         current_page            :   '',
         api_url_root            :   'http://127.0.0.1:8000',
@@ -28,6 +30,7 @@ export const store = reactive(
                 .then( response =>
                   {
                     this.categories = response.data.categories;
+                    this.categories_filter = this.categories.length + 1;
                   })
                 .catch( error =>
                   {
