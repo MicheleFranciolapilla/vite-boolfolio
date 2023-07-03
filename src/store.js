@@ -40,7 +40,9 @@ export const store = reactive(
         paging_events           :   {
                                         change_page :   false,
                                         page_to_go  :   0
-                                    }, 
+                                    },
+        // La variabile "categories_filter" contiene il valore di riferimento per la ricerca filtrata sulle categorie. Il valore "-2" indica "tutte" mentre "-1" consente una ricerca per "progetti senza categoria"
+        categories_filter       :   -2, 
 
         about()
         {

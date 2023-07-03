@@ -68,9 +68,9 @@
                                                 },
                                                 {
                                                     item_id         :   3,
-                                                    item_name       :   'Layout Pagina',
+                                                    item_name       :   'Opzioni',
                                                     item_type       :   'dd',
-                                                    item_dd_ref     :   'page_layout_dropdown',
+                                                    item_dd_ref     :   'options_dropdown',
                                                     item_in_pages   :   [
                                                                             'home',
                                                                             'projects_index'
@@ -79,8 +79,8 @@
                                                                             {
                                                                                 item_id         :   301,
                                                                                 bool_var_ref    :   'side_panel_visible',
-                                                                                name_if_true    :   "Nascondi pannello",
-                                                                                name_if_false   :   "Mostra pannello",
+                                                                                name_if_true    :   "Nascondi pannello filtri",
+                                                                                name_if_false   :   "Mostra pannello filtri",
                                                                                 item_type       :   'toggler',
                                                                                 item_js_method()    {
                                                                                                         store.toggle_bool("side_panel_visible");
@@ -237,7 +237,7 @@
                             </div>
                         </li>
                     </ul>
-                    <form class="d-flex">
+                    <form v-if="store.current_page == 'projects_index'" class="d-flex">
                         <input class="form-control me-2" type="search" placeholder="Cerca testo ..." aria-label="Search">
                         <button class="btn btn-outline-success" type="submit">Cerca</button>
                     </form>

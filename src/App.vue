@@ -82,7 +82,7 @@
       <section 
        v-if="store.side_panel_visible" 
        id="side_panel_section" 
-       class="col-1 ms-3 border border-3 border-info bg-light"
+       class="col-1 ms-3 border border-3 border-info bg-light p-0 py-2"
        :class="(store.current_page == 'home') ? 'home_panel' : ''">
         <Comp_SidePanel />
       </section>
