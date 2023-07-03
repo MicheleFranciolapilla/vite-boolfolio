@@ -37,7 +37,7 @@
             {
               this.store.categories = response.data.categories;
               this.store.categories_updated.success = true;
-              console.log(this.store.categories);
+              console.log("categorie", this.store.categories);
             })
           .catch( error =>
             {
@@ -56,7 +56,7 @@
             {
               this.store.technologies = response.data.technologies;
               this.store.technologies_updated.success = true;
-              console.log(this.store.technologies);
+              console.log("tecnologie",this.store.technologies);
             })
           .catch( error =>
             {
@@ -82,11 +82,11 @@
       <section 
        v-if="store.side_panel_visible" 
        id="side_panel_section" 
-       class="col-1 ms-3 border border-3 border-info bg-light p-0 py-2"
+       class="col-2 ms-3 border border-3 border-info bg-light p-0 py-2"
        :class="(store.current_page == 'home') ? 'home_panel' : ''">
         <Comp_SidePanel />
       </section>
-      <section id="router_views" class="col-9 px-5">
+      <section id="router_views" class="col-8 px-5">
         <RouterView></RouterView>
       </section>
     </main>

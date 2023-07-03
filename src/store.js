@@ -53,5 +53,6 @@ export const store = reactive(
         {
             console.log("toggling");
             this[bool_var_ref] = !this[bool_var_ref];
-        }
+        },
+
     })
