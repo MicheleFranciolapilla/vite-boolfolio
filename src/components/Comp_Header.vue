@@ -1,5 +1,5 @@
 <script>
-    import { store } from "../store";
+    import { store } from "../AxiosStore";
     export default
     {
         name    : "Comp_Header",
@@ -51,8 +51,7 @@
                                                                                 item_type       :   'route',
                                                                                 item_to         :   'projects_index',
                                                                                 active_in_pages :   [
-                                                                                                        'home',
-                                                                                                        'projects_index'
+                                                                                                        'home'
                                                                                                     ]
                                                                             }
                                                                         ]
@@ -101,7 +100,7 @@
             {
                 return (bool_var_ref, name_if_true, name_if_false) =>
                     {
-                        let   var_ref = this.store[bool_var_ref];
+                        let var_ref = this.store[bool_var_ref];
                         return var_ref ? name_if_true : name_if_false;
                     };
             }
@@ -110,8 +109,6 @@
         {
             list_item_class_binder(item)
             {
-                if (item.item_type == "dd_child")
-                    return "";
                 let li_classes = "nav-item";
                 if (item.item_type == "dd")
                     li_classes += " dropdown";
@@ -120,8 +117,6 @@
 
             link_class_binder(item)
             {
-                if (item.item_type == "dd_child")
-                    return "dropdown-item";
                 let link_classes = "nav-link";
                 if (item.item_type == "dd")
                     link_classes += " dropdown-toggle";
@@ -135,19 +130,6 @@
                 this.current_item = item.item_type;
                 return true;
             },
-
-            check_toggler(item)
-            {
-                console.log("entrato......");
-                console.log(item.item_toggle.condition == true);
-                console.log(item.item_toggle.label_true);
-                console.log(item.item_toggle.label_false);
-
-                if (item.item_toggle.condition == true)
-                    return item.item_toggle.label_true;
-                else 
-                    return item.item_toggle.label_false;
-            }            
         } 
     }
 </script>
@@ -172,6 +154,7 @@
                          :key="item.item_id"
                          :class="list_item_class_binder(item)">
                             <div v-if="is_menu_item_in_page(item)">
+
                                 <a 
                                  v-if="(current_item == 'js')" 
                                  v-on:click="item.item_js_method" 
@@ -179,12 +162,21 @@
                                  :class="link_class_binder(item)">
                                     {{ item.item_name }}
                                 </a>
+
                                 <a 
                                  v-else-if="(current_item == 'anchor')" 
                                  :href="item.item_to"
                                  :class="link_class_binder(item)">
                                     {{ item.item_name }}
                                 </a>
+
+                                <router-link 
+                                 v-else-if="(current_item == 'route')"
+                                 :to="{ name : item.item_to}"
+                                 :class="link_class_binder(item)">
+                                    {{ item.item_name }}
+                                </router-link>
+
                                 <div v-else-if="(current_item == 'dd')">
                                     <a 
                                      href="#" 
@@ -199,6 +191,7 @@
                                         <li 
                                          v-for="sub_item in item.item_children"
                                          :key="sub_item.item_id">
+
                                             <router-link 
                                              v-if="sub_item.item_type == 'route'" 
                                              :to="{ name : sub_item.item_to }" 
@@ -206,6 +199,7 @@
                                              :class="(!sub_item.active_in_pages.includes(store.current_page)) ? ('disabled') : ('')">
                                                 {{ sub_item.item_name }}
                                             </router-link>
+
                                             <a 
                                              v-else-if="sub_item.item_type == 'toggler'" 
                                              v-on:click="sub_item.item_js_method" 
@@ -215,15 +209,10 @@
                                              :class="(!sub_item.active_in_pages.includes(store.current_page)) ? ('disabled') : ('')">
                                                 {{ set_list_item(sub_item.bool_var_ref, sub_item.name_if_true, sub_item.name_if_false) }}
                                             </a>
+
                                         </li>
                                     </ul>
                                 </div>
-                                <router-link 
-                                 v-else-if="(current_item == 'route')"
-                                 :to="{ name : item.item_to}"
-                                 :class="link_class_binder(item)">
-                                    {{ item.item_name }}
-                                </router-link>
                             </div>
                         </li>
                     </ul>

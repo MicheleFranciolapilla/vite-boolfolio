@@ -1,6 +1,5 @@
 <script>
-  import axios from 'axios';
-  import { store } from './store';
+  import { store } from './AxiosStore';
   import Comp_Header from './components/Comp_Header.vue';
   import Comp_PageManager from './components/Comp_PageManager.vue';
   import Comp_SidePanel from './components/Comp_SidePanel.vue';
@@ -31,8 +30,8 @@
       initialize_data()
       {
         this.store.session_start = false;
-        this.get_categories();
-        this.get_technologies();
+        this.store.get_categories();
+        this.store.get_technologies();
       },
 
       initialize_tech_filter()
@@ -43,46 +42,6 @@
           this.store.technologies_filter.push(true);
         }
       },
-
-      get_categories()
-      {
-        axios.get(`${this.store.api_url_root}/api/categories`)
-          .then( response =>
-            {
-              this.store.categories = response.data.categories;
-              this.store.categories_updated.success = true;
-              console.log("categorie", this.store.categories);
-            })
-          .catch( error =>
-            {
-              this.store.categories_updated.success = false;
-            });
-        this.store.categories_updated.executed = true;
-        let now = new Date();
-        this.store.categories_updated.date = now.toDateString();
-        this.store.categories_updated.time = now.toTimeString();
-        this.categories_filter = -2;
-      },
-
-      async get_technologies()
-      {
-        await axios.get(`${this.store.api_url_root}/api/technologies`)
-          .then( response =>
-            {
-              this.store.technologies = response.data.technologies;
-              this.store.technologies_updated.success = true;
-              console.log("tecnologie",this.store.technologies);
-            })
-          .catch( error =>
-            {
-              this.store.technologies_updated.success = false;
-            });
-        this.store.technologies_updated.executed = true;
-        let now = new Date();
-        this.store.technologies_updated.date = now.toDateString();
-        this.store.technologies_updated.time = now.toTimeString();  
-        this.initialize_tech_filter();
-      }
     }
   }
 </script>
@@ -132,8 +91,10 @@
         position: sticky;
         top: calc($header_height + $page_manager_h + $upper_gap);
         left: 0;
-        max-height: 65vh;
+        max-height: calc(65vh);
+        overflow-y: auto;
         align-self: flex-start;
+        z-index: 999;
         &.home_panel
         {
           top: calc($header_height + $upper_gap);

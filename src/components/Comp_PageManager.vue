@@ -1,9 +1,9 @@
 <script>
-    import { store } from "../store";
+    import { store } from "../AxiosStore";
 
     export default
     {
-        name    : "Comp_Manager",
+        name    : "Comp_PageManager",
         data()
         {
             return  {
@@ -14,9 +14,8 @@
         {
             change_page(page_nr)
             {
-                console.log("from paga manager");
-                this.store.paging_events.change_page = true;
-                this.store.paging_events.page_to_go = page_nr;
+                this.store.axios_call_params.page = page_nr;
+                this.store.get_projects();
             }
         }
     }
