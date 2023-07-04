@@ -34,7 +34,8 @@
                     }
                     else
                     {
-                        temp_params.category_id = checked_i;
+                        let array_index = checked_i - 1;
+                        temp_params.category_id = this.store.categories[array_index].id;
                         this.store.categories_filter = checked_i;
                     }
                 }
@@ -44,7 +45,7 @@
 
             switch_tech(index)
             {
-                this.store.technologies_filter = !this.store.technologies_filter;
+                this.store.technologies_filter[index] = !this.store.technologies_filter[index];
             },
 
             get_fa_classes(icon_str)
