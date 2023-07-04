@@ -5,6 +5,7 @@ export const store = reactive(
     {
         session_start           :   true,
         projects                :   [],
+        single_project          :   {}, 
         projects_load_running   :   false,
         projects_load_success   :   false,
         categories              :   [],
@@ -55,22 +56,39 @@ export const store = reactive(
 
         get_projects()
         {
-            this.projects_load_running = true;
-            const params = this.axios_call_params;
-            axios.get(`${this.api_url_root}/api/projects`,{ params })
-                .then( response =>
-                    {
-                        this.projects = response.data.projects.data;
-                        this.api_paging_info.api_current_page = response.data.projects.current_page;
-                        this.api_paging_info.api_total_pages = response.data.projects.last_page;
-                        this.projects_load_running = false;
-                        this.projects_load_success = true;
-                    })
-                .catch( error =>
-                    {
-                        this.projects_load_running = false;
-                        this.projects_load_success = false;
-                    });
+          this.projects_load_running = true;
+          let params = this.axios_call_params;
+          axios.get(`${this.api_url_root}/api/projects`, { params })
+            .then( response =>
+              {
+                this.projects = response.data.projects.data;
+                this.api_paging_info.api_current_page = response.data.projects.current_page;
+                this.api_paging_info.api_total_pages = response.data.projects.last_page;
+                this.projects_load_running = false;
+                this.projects_load_success = true;
+              })
+            .catch( error =>
+              {
+                this.projects_load_running = false;
+                this.projects_load_success = false;
+              });
+        },
+
+        get_single_project(slug)
+        {
+          this.projects_load_running = true;
+          axios.get(`${this.api_url_root}/api/projects/${slug}`)
+            .then( response =>
+              {
+                this.single_project = response.data.project;
+                this.projects_load_running = false;
+                this.projects_load_success = true;
+              })
+            .catch( error =>
+              {
+                this.projects_load_running = false;
+                this.projects_load_success = false;
+              });
         },
 
         init_tech_filter()

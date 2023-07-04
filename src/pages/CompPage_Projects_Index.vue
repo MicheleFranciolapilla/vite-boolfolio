@@ -31,6 +31,7 @@
 
             show_project(project_slug)
             {
+                console.log("chiamata pagina show: ", project_slug);
                 this.$router.push({ name : 'projects_show', params : { slug : project_slug } });   
             }
         }

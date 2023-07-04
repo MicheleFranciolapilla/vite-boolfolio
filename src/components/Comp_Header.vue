@@ -20,7 +20,8 @@
                                                     item_to         :   'home', 
                                                     // Array con tutte le pagine in cui l'item è presente
                                                     item_in_pages   :   [
-                                                                            'projects_index'
+                                                                            'projects_index',
+                                                                            'projects_show'
                                                                         ]
                                                 },
                                                 {
@@ -32,7 +33,8 @@
                                                                         },
                                                     item_in_pages   :   [
                                                                             'home',
-                                                                            'projects_index'
+                                                                            'projects_index',
+                                                                            'projects_show'
                                                                         ]
                                                 },
                                                 {
@@ -42,7 +44,8 @@
                                                     item_dd_ref     :   'projects_dropdown',
                                                     item_in_pages   :   [
                                                                             'home',
-                                                                            'projects_index'
+                                                                            'projects_index',
+                                                                            'projects_show'
                                                                         ],
                                                     item_children   :   [
                                                                             {
@@ -51,7 +54,8 @@
                                                                                 item_type       :   'route',
                                                                                 item_to         :   'projects_index',
                                                                                 active_in_pages :   [
-                                                                                                        'home'
+                                                                                                        'home',
+                                                                                                        'projects_show'
                                                                                                     ]
                                                                             }
                                                                         ]
@@ -63,7 +67,8 @@
                                                     item_dd_ref     :   'options_dropdown',
                                                     item_in_pages   :   [
                                                                             'home',
-                                                                            'projects_index'
+                                                                            'projects_index',
+                                                                            'projects_show'
                                                                         ],
                                                     item_children   :   [
                                                                             {
@@ -88,7 +93,8 @@
                                                     item_to         :   store.api_url_root,
                                                     item_in_pages   :   [
                                                                             'home',
-                                                                            'projects_index'
+                                                                            'projects_index',
+                                                                            'projects_show'
                                                                         ]
                                                 }
                                             ],

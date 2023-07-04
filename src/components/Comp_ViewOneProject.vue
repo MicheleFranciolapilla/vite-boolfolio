@@ -2,7 +2,7 @@
     export default
     {
         name    : "Comp_ViewOneProject",
-        props   : ['project', 'backup_img', 'just_img', 'api_url_root'],
+        props   : ['is_single', 'project', 'backup_img', 'just_img', 'api_url_root'],
         data()
         {
             return  {
@@ -83,6 +83,7 @@
 
             create_emit()
             {
+                console.log("generazione emit: ", this.project.slug)
                 this.$emit("click_on_project", this.project.slug);
             }
         }
@@ -90,7 +91,12 @@
 </script>
 
 <template>
-    <div class="card p-1" @mouseover="show_data()" @mouseleave="hide_data()" @click="create_emit()">
+    <div 
+     v-if="!is_single" 
+     class="card p-1" 
+     @mouseover="show_data()" 
+     @mouseleave="hide_data()" 
+     @click="create_emit()">
         <img 
          :src="set_image_path()" 
          :alt="(is_there_img) ? 'Immagine propria del progetto' : 'Immagine di backup'" 
@@ -98,6 +104,9 @@
         <div v-if="!just_img" class="card-body p-0 m-0">
             <h4 class="card-title">{{ project.title }}</h4>
         </div>
+    </div>
+    <div v-else>
+        <h1>progetto singolo</h1>
     </div>
 </template>
 

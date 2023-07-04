@@ -32,6 +32,7 @@
 
             rebound_click(slug_to_rebound)
             {
+                console.log("rimbalzo emit: ", slug_to_rebound);
                 this.$emit("rebounded_emit",slug_to_rebound);
             }
         }
@@ -45,6 +46,7 @@
          :key="'project' + index" 
          :style="{ width: calc_card_width() }">
             <Comp_ViewOneProject 
+             :is_single = "false"
              :project = "collection_item"
              :backup_img = "backup_img"
              :just_img = "(items_per_row > 6)"

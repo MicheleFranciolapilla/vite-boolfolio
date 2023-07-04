@@ -50,7 +50,7 @@
   <div id="front_end">
     <div id="fixed_top_components" class="fixed-top">
       <Comp_Header/>
-      <Comp_PageManager v-if="store.current_page != 'home'" />
+      <Comp_PageManager v-if="store.current_page == 'projects_index'" />
     </div>
     <main class="row mx-0" 
      :class="(store.current_page == 'home') ? 'home_main' : ''">
