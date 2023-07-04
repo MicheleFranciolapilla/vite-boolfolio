@@ -2,7 +2,7 @@
     export default
     {
         name    : "Comp_ViewOneProject",
-        props   : ['project', 'backup_img', 'api_url_root', 'just_img'],
+        props   : ['project', 'backup_img', 'just_img'],
         data()
         {
             return  {
@@ -79,13 +79,18 @@
             {
                 let full_title_viewer = document.getElementById("full_length_title");
                 full_title_viewer.classList.add("d-none");
+            },
+
+            create_emit()
+            {
+                this.$emit("click_on_project", this.project.slug);
             }
         }
     }
 </script>
 
 <template>
-    <div class="card p-1" @mousemove="show_data()" @mouseleave="hide_data()">
+    <div class="card p-1" @mouseover="show_data()" @mouseleave="hide_data()" @click="create_emit()">
         <img 
          :src="set_image_path()" 
          :alt="(is_there_img) ? 'Immagine propria del progetto' : 'Immagine di backup'" 

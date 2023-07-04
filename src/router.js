@@ -24,7 +24,7 @@ const router = createRouter(
                                             }   
                         },
                         {
-                            path        :   '/projects',
+                            path        :   '/projects/:project-slug',
                             name        :   'projects_show',
                             component   :   CompPage_Projects_Show
                         }

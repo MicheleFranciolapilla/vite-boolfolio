@@ -51,6 +51,7 @@
 
                 // Logica di assegnazione del parametro API relativo alle tecnologie richieste:
                 
+                
                 // Impostazione del parametro finale per la API e chiamata alla stessa
                 this.store.axios_call_params = temp_params;
                 this.store.get_projects();

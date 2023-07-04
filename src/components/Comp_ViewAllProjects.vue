@@ -3,7 +3,7 @@
     export default
     {
         name        : "Comp_ViewAllProjects",
-        props       : ['collection', 'items_per_row', 'backup_img', 'api_url_root'],
+        props       : ['collection', 'items_per_row', 'backup_img'],
         components  :
         {
             Comp_ViewOneProject
@@ -28,6 +28,11 @@
             calc_card_width()
             {
                 return `calc((100% - (${this.collection_gap} * (${this.items_per_row} - 1))) / ${this.items_per_row})`;
+            },
+
+            rebound_click(slug_to_rebound)
+            {
+                this.$emit("rebounded_emit",slug_to_rebound);
             }
         }
     }
@@ -37,13 +42,13 @@
     <div id="projects_collection" class="d-flex flex-wrap" :style="{ gap: calc_flex_gap() }">
         <div 
          v-for="(collection_item, index) in collection" 
-         :key="index" 
+         :key="'project' + index" 
          :style="{ width: calc_card_width() }">
             <Comp_ViewOneProject 
              :project = "collection_item"
              :backup_img = "backup_img"
-             :api_url_root = "api_url_root"
-             :just_img = "(items_per_row > 6)" />
+             :just_img = "(items_per_row > 6)"
+             @click_on_project = "rebound_click" />
         </div>
     </div>
 </template>

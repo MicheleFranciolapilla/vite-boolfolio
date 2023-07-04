@@ -27,6 +27,11 @@
                 this.store.categories_filter = this.store.categories.length + 1;
                 this.store.init_tech_filter();
                 this.store.get_projects();
+            },
+
+            show_project(project_slug)
+            {
+                
             }
         }
     }
@@ -45,7 +50,7 @@
      :collection = "store.projects" 
      :items_per_row = "store.projects_per_row"
      :backup_img = "store.backup_img_path"
-     :api_url_root = "store.api_url_root" />
+     @rebounded_emit = "show_project" />
 
      <div 
       id="loading_failed" 
