@@ -144,6 +144,20 @@
                 :alt="(is_there_img) ? 'Immagine propria del progetto' : 'Immagine di backup'">
             </div>
         </div>
+        <div id="bottom_box">
+            <div id="host_box" class="p-2 border border-2 border-light rounded-3 text-white bg-dark">
+                <h6 class="text-white-50 mb-2">HOST URL: </h6>
+                <div id="host_text">
+                    <h4>{{ (project.host_url) ? project.host_url : 'Nessun indirizzo host presente' }}</h4>
+                </div>
+            </div>
+            <div id="description_box" class="p-2 border border-2 border-light rounded-3 text-white bg-dark">
+                <h6 class="text-white-50 mb-2">Descrizione: </h6>
+                <div id="description_text">
+                    <h4>{{ project.description }}</h4>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -198,12 +212,38 @@
             {
                 order: -1;
                 flex-grow: 1;
-                max-height: 100vh;
                 img
                 {
                     width: calc(100%);
                     object-fit: cover;
                 } 
+            }
+        }
+        #bottom_box
+        {
+            width: 100%;
+            #host_box
+            {
+                width: 100%;
+                #host_text
+                {
+                    width: 100%;
+                    max-height: 2rem;
+                    overflow-y: auto;
+                    color: yellowgreen;
+                }
+            }
+            width: 100%;
+            #description_box
+            {
+                width: 100%;
+                #description_text
+                {
+                    width: 100%;
+                    max-height: 5rem;
+                    overflow-y: auto;
+                    color: yellowgreen;
+                }
             }
         }
     }
