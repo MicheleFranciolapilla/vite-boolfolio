@@ -6,7 +6,7 @@
         data()
         {
             return  {
-                        is_there_img    : false
+                        is_there_img    : false,
                     }
         },
         methods:
@@ -26,7 +26,7 @@
 
             get_category_str()
             {
-                if (this.project.category_id)
+                if (this.project.category)
                     return this.project.category.name;
                 else    
                     return "Nessuna";
@@ -85,6 +85,14 @@
             {
                 console.log("generazione emit: ", this.project.slug)
                 this.$emit("click_on_project", this.project.slug);
+            },
+
+            get_fa_classes(icon_str)
+            {
+                let quote_pos = icon_str.indexOf('"');
+                let temp_str = icon_str.substring(quote_pos + 1);
+                quote_pos = temp_str.indexOf('"');
+                return temp_str.substring(0,quote_pos);
             }
         }
     }
@@ -105,8 +113,37 @@
             <h4 class="card-title">{{ project.title }}</h4>
         </div>
     </div>
-    <div v-else>
-        <h1>progetto singolo</h1>
+    <div v-else id="single_project_view">
+        <div id="title_box" class="p-3 border border-3 border-info rounded-3 text-primary bg-dark">
+            <h2>Progetto: {{ project.title }}</h2>
+        </div>
+        <div id="middle_box">
+            <div id="category_techs">
+                <div id="category_box" class="p-2 border border-2 border-light rounded-3 text-white bg-dark">
+                    <h6 class="text-white-50 mb-2">Categoria:</h6>
+                    <h4>{{ get_category_str() }}</h4>
+                </div>
+                <div id="techs_box" class="p-2 border border-2 border-light rounded-3 text-white bg-dark mt-3">
+                    <h6 class="text-white-50 mb-2">Tecnologie:</h6>
+                    <ul v-if="project.technologies.length != 0" class="ps-0">
+                        <li 
+                         v-for="(tech, index) in project.technologies"
+                         :key="'tech' + index">
+                         <div class="d-flex justify-content-between">
+                            <h4>{{ tech.name }}</h4>
+                            <h4 class="text-primary ms-3"><i :class="get_fa_classes(tech.icon)"></i></h4>
+                         </div>
+                        </li>
+                    </ul>
+                    <h4 v-else>Nessuna </h4>
+                </div>
+            </div>
+            <div id="img_box" class="p-2 border border-3 border-info rounded-3">
+                <img 
+                :src="set_image_path()" 
+                :alt="(is_there_img) ? 'Immagine propria del progetto' : 'Immagine di backup'">
+            </div>
+        </div>
     </div>
 </template>
 
@@ -135,6 +172,38 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
+            }
+        }
+    }
+
+    #single_project_view
+    {
+        width: calc(100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        row-gap: 1rem;
+        #middle_box
+        {
+            width: calc(100%);
+            display: flex;
+            justify-content: space-between;
+            column-gap: 1rem;
+            #category_techs
+            {
+                align-self: flex-start;
+            }
+            #img_box
+            {
+                order: -1;
+                flex-grow: 1;
+                max-height: 100vh;
+                img
+                {
+                    width: calc(100%);
+                    object-fit: cover;
+                } 
             }
         }
     }

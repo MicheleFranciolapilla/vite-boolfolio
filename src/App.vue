@@ -53,7 +53,7 @@
       <Comp_PageManager v-if="store.current_page == 'projects_index'" />
     </div>
     <main class="row mx-0" 
-     :class="(store.current_page == 'home') ? 'home_main' : ''">
+     :class="(store.current_page != 'projects_index') ? 'home_main' : ''">
       <section 
        v-if="store.side_panel_visible && store.current_page == 'projects_index'" 
        id="side_panel_section" 
