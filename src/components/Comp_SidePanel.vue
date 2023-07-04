@@ -13,6 +13,7 @@
         {
             get_filtered_projects()
             {
+                // Logica di individuazione della categoria richiesta
                 let filtering_radios = document.getElementsByName('category_filter');
                 let checked_i = -1;
                 for (let i = 0; i < filtering_radios.length; i++)
@@ -23,10 +24,17 @@
                         break;
                     }
                 }
+
+                // Formattazione del parametro standard per la API, ovvero pagina 1 senza ulteriori parametri
                 let temp_params = { page : 1 };
+                // Assegnazione del valore opportuno alla variabile di filtraggio della categoria
                 this.store.categories_filter = filtering_radios.length - 1;
+
+                // Logica di assegnazione del parametro API relativo alla categoria richiesta:
+                // Se checked_i vale 0 si richiedono tutte le categorie, quindi basta il parametro standard per la API
                 if (checked_i != 0)
                 {
+                    // Se, invece checked_i è massimo, significa che si è selezionata l'ultima radio button, ovvero categoria assente (null nel DB), dunque si imposta il parametro per la API con stringa vuota che identifica, appunto, il valore null nel database
                     if (checked_i == filtering_radios.length - 1)
                     {
                         temp_params.category_id = "";
@@ -34,11 +42,16 @@
                     }
                     else
                     {
+                        // Se invece si è selezionata una categoria specifica, il parametro per la API non sarà check_id (valido, comunque nel caso in cui nel database, gli id delle categorie siano in ordine crescente, a partire da 1), bensì il valore specifico della id, presente nell'array categories che coincide, in tutti i casi, con il valore riscontrato nel database
                         let array_index = checked_i - 1;
                         temp_params.category_id = this.store.categories[array_index].id;
                         this.store.categories_filter = checked_i;
                     }
                 }
+
+                // Logica di assegnazione del parametro API relativo alle tecnologie richieste:
+                
+                // Impostazione del parametro finale per la API e chiamata alla stessa
                 this.store.axios_call_params = temp_params;
                 this.store.get_projects();
             },
