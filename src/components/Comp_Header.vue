@@ -51,7 +51,7 @@
                                                                                 item_type       :   'route',
                                                                                 item_to         :   'projects_index',
                                                                                 active_in_pages :   [
-                                                                                                        'home',
+                                                                                                        'home'
                                                                                                     ]
                                                                             }
                                                                         ]

@@ -11,6 +11,7 @@ export const store = reactive(
         // Valori per categories_filter:  0 = nessuna categoria; n+1 (n = categories.length) = tutte (default); 1......n come id in tabella
         categories_filter       :   -1,
         technologies            :   [], 
+        technologies_filter     :   [],
         current_page            :   '',
         api_url_root            :   'http://127.0.0.1:8000',
         api_paging_info         :   {
@@ -44,6 +45,7 @@ export const store = reactive(
             .then( response =>
               {
                 this.technologies = response.data.technologies;
+                this.init_tech_filter();
               })
             .catch( error =>
               {
@@ -69,6 +71,13 @@ export const store = reactive(
                         this.projects_load_running = false;
                         this.projects_load_success = false;
                     });
+        },
+
+        init_tech_filter()
+        {
+          this.technologies_filter = [];
+          for (let i = 0; i < this.technologies.length; i++)
+            this.technologies_filter.push(true);
         },
 
         toggle_bool(bool_var_ref)

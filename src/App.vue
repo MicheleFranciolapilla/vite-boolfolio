@@ -91,8 +91,10 @@
         position: sticky;
         top: calc($header_height + $page_manager_h + $upper_gap);
         left: 0;
-        max-height: 65vh;
+        max-height: calc(65vh);
+        overflow-y: auto;
         align-self: flex-start;
+        z-index: 999;
         &.home_panel
         {
           top: calc($header_height + $upper_gap);

@@ -24,15 +24,27 @@
                     }
                 }
                 let temp_params = { page : 1 };
+                this.store.categories_filter = filtering_radios.length - 1;
                 if (checked_i != 0)
                 {
                     if (checked_i == filtering_radios.length - 1)
+                    {
                         temp_params.category_id = "";
+                        this.store.categories_filter = 0;
+                    }
                     else
+                    {
                         temp_params.category_id = checked_i;
+                        this.store.categories_filter = checked_i;
+                    }
                 }
                 this.store.axios_call_params = temp_params;
                 this.store.get_projects();
+            },
+
+            switch_tech(index)
+            {
+                this.store.technologies_filter = !this.store.technologies_filter;
             },
 
             get_fa_classes(icon_str)
@@ -49,7 +61,7 @@
 <template>
     <div id="side_panel" class="d-flex flex-column align-items-center row-gap-2 text-center">
         <h5 class="mb-2">Filtri</h5>
-        <div id="filters_block" class="d-flex justify-content-between align-items-start">
+        <div id="filters_block" class="d-flex justify-content-between align-items-start px-1">
             <div id="categories_panel" class="ps-1">
                 <h6 class="text-start">Categoria:</h6>
                 <ul v-if="store.categories.length != 0" id="categories_list" class="d-flex flex-column align-items-start row-gap-2 px-2 py-1">
@@ -88,18 +100,18 @@
                     <span class="text-warning bg-danger p-2">Data error</span>
                 </div>
             </div>
-            <!-- <div id="technologies_panel" class="pe-1">
+            <div id="technologies_panel" class="pe-1">
                 <h6 class="text-start">Tecnologie:</h6>
                 <ul v-if="store.technologies.length != 0" id="technologies_list" class="d-flex flex-column align-items-start row-gap-2 px-2 py-1">
                     <li 
                      v-for="(item, index) in store.technologies"
-                     :key="'technology__' + index">
+                     :key="'technology_' + index + 1">
                         <div class="form-check">
-                            <input class="form-check-input me-3" type="checkbox" value="" 
-                             :id="`technology_${ item.name }`"
+                            <input class="form-check-input me-3" type="checkbox" 
+                             :id="`technology_${ index + 1 }`"
                              :checked="store.technologies_filter[index]"
-                             v-on:change="store.technologies_filter[index] = !store.technologies_filter[index]">
-                            <label class="form-check-label position-relative" :for="`technology_${ item.name }`">
+                             v-on:change="switch_tech(index)">
+                            <label class="form-check-label" :for="`technology_${ index + 1 }`">
                                 <i :class="get_fa_classes(item.icon)"></i>
                                 <span class="name_on_hover text-info bg-dark px-3">{{ item.name }}</span>
                             </label>
@@ -109,7 +121,7 @@
                 <div v-else>
                     <span class="text-warning bg-danger p-2">Data error</span>
                 </div>
-            </div> -->
+            </div>
         </div>
         <button id="btn_with_filters" class="btn btn-primary" type="button" v-on:click="get_filtered_projects()">Applica filtri</button>
     </div>
@@ -135,6 +147,7 @@
             }
             #technologies_panel
             {
+                order: -1;
                 h6
                 {
                     color: orange;
@@ -142,25 +155,30 @@
                 #technologies_list
                 {
                     border: 2px solid orange;
-                    .form-check-label
+                    .form-check
                     {
-                        .name_on_hover
+                        .form-check-label
                         {
-                            position: absolute;
-                            left: 125%;
-                            display: none;
-                            border: 2px solid yellowgreen;
-                            border-radius: 2px;
-                        }
-                        &:hover
-                        {
-                            cursor: pointer;
+                            position: relative;
                             .name_on_hover
                             {
-                                display: inline-block;
+                                position: absolute;
+                                left: 0;
+                                display: none;
+                                border: 2px solid yellowgreen;
+                                border-radius: 2px;
+                                z-index: 1000;
+                            }
+                            &:hover
+                            {
+                                cursor: pointer;
+                                .name_on_hover
+                                {
+                                    display: inline-block;
+                                }
                             }
                         }
-                    }
+                    } 
                 }
             }
         }
