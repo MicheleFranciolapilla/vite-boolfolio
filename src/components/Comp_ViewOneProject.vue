@@ -2,7 +2,7 @@
     export default
     {
         name    : "Comp_ViewOneProject",
-        props   : ['project', 'backup_img', 'just_img'],
+        props   : ['project', 'backup_img', 'just_img', 'api_url_root'],
         data()
         {
             return  {

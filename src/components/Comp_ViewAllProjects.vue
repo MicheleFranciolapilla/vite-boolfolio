@@ -3,7 +3,7 @@
     export default
     {
         name        : "Comp_ViewAllProjects",
-        props       : ['collection', 'items_per_row', 'backup_img'],
+        props       : ['collection', 'items_per_row', 'backup_img', 'api_url_root'],
         components  :
         {
             Comp_ViewOneProject
@@ -48,6 +48,7 @@
              :project = "collection_item"
              :backup_img = "backup_img"
              :just_img = "(items_per_row > 6)"
+             :api_url_root = "api_url_root"
              @click_on_project = "rebound_click" />
         </div>
     </div>

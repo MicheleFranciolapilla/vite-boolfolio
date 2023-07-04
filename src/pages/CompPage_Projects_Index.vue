@@ -31,7 +31,7 @@
 
             show_project(project_slug)
             {
-                
+                this.$router.push({ name : 'projects_show', params : { slug : project_slug } });   
             }
         }
     }
@@ -50,6 +50,7 @@
      :collection = "store.projects" 
      :items_per_row = "store.projects_per_row"
      :backup_img = "store.backup_img_path"
+     :api_url_root = "store.api_url_root"
      @rebounded_emit = "show_project" />
 
      <div 

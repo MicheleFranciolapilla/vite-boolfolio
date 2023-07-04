@@ -24,9 +24,17 @@ const router = createRouter(
                                             }   
                         },
                         {
-                            path        :   '/projects/:project-slug',
+                            path        :   '/projects/:slug',
                             name        :   'projects_show',
-                            component   :   CompPage_Projects_Show
+                            component   :   CompPage_Projects_Show,
+                            meta        :   {
+                                                page_title  : 'My Projects | Project'
+                                            },
+                            beforeEnter :   (to, from, next) =>
+                                            {
+                                                document.title  = to.meta.page_title + ' : ' + to.params.slug;
+                                                next();
+                                            }
                         }
                     ] 
     });
