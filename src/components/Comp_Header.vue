@@ -83,6 +83,19 @@
                                                                                 active_in_pages :   [
                                                                                                         'projects_index'
                                                                                                     ]
+                                                                            },
+                                                                            {
+                                                                                item_id         :   302,
+                                                                                bool_var_ref    :   'search_only_title',
+                                                                                name_if_true    :   "Cerca testo in titolo e descrizione",
+                                                                                name_if_false   :   "Cerca testo solo nel titolo",
+                                                                                item_type       :   'toggler',
+                                                                                item_js_method()    {
+                                                                                                        store.toggle_bool("search_only_title");
+                                                                                                    },
+                                                                                active_in_pages :   [
+                                                                                                        'projects_index'
+                                                                                                    ]
                                                                             }
                                                                         ]
                                                 },
@@ -145,7 +158,7 @@
                 else
                 {
                     let temp_params = { page : 1 };
-                    temp_params.search_str = this.store.search_string;
+                    temp_params.search_str = this.store.search_string.toLowerCase();
                     this.store.axios_call_params = temp_params;
                     this.store.get_projects();
                 }
@@ -236,8 +249,11 @@
                             </div>
                         </li>
                     </ul>
-                    <form v-if="store.current_page == 'projects_index'" class="d-flex" v-on:submit.prevent="search_text()">
-                        <input class="form-control me-2" v-model="store.search_string" type="search" placeholder="Cerca testo ..." aria-label="Search" required :minlength="store.search_str_min_length">
+                    <form v-if="store.current_page == 'projects_index'" class="d-flex position-relative" v-on:submit.prevent="search_text()">
+                        <h6 id="search_string_info" class="text-warning bg-dark border border-2 border-info rounded-2 px-3 py-2">
+                            INFORMAZIONI
+                        </h6>
+                        <input id="search_string" class="form-control me-2" v-model="store.search_string" type="search" placeholder="Cerca testo ..." aria-label="Search" required :minlength="store.search_str_min_length">
                         <button class="btn btn-outline-success" type="submit">Cerca</button>
                     </form>
                 </div>
@@ -268,5 +284,16 @@
                 }
             }
         }
+        form
+        {
+            #search_string_info
+            {
+                position: absolute;
+                top: 110%;
+                left: -25px;
+                display: none;
+            }
+        } 
+
     }
 </style>
