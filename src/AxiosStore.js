@@ -25,6 +25,9 @@ export const store = reactive(
         backup_img_path         :   "../public/img/backup_img.png",
         side_panel_visible      :   true,
         projects_per_row        :   4, 
+        search_only_title       :   true,
+        search_str_min_length   :   5,
+        search_string           :   "",
         error_message           :   "",
 
         get_categories()

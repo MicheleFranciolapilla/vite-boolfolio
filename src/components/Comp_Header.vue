@@ -83,6 +83,19 @@
                                                                                 active_in_pages :   [
                                                                                                         'projects_index'
                                                                                                     ]
+                                                                            },
+                                                                            {
+                                                                                item_id         :   302,
+                                                                                bool_var_ref    :   'search_only_title',
+                                                                                name_if_true    :   "Cerca testo in titolo e descrizione",
+                                                                                name_if_false   :   "Cerca testo solo nel titolo",
+                                                                                item_type       :   'toggler',
+                                                                                item_js_method()    {
+                                                                                                        store.toggle_bool("search_only_title");
+                                                                                                    },
+                                                                                active_in_pages :   [
+                                                                                                        'projects_index'
+                                                                                                    ]
                                                                             }
                                                                         ]
                                                 },
@@ -136,6 +149,24 @@
                 this.current_item = item.item_type;
                 return true;
             },
+
+            search_text()
+            {
+                let check_str = this.store.search_string.trim();
+                if (check_str.length < this.store.search_str_min_length)
+                    this.store.invoke_error_viewer(`Il testo da cercare deve avere una lunghezza minima di ${this.store.search_str_min_length} caratteri!`, 3000);
+                else
+                {
+                    let temp_params = { page : 1 };
+                    temp_params.search_str = this.store.search_string.toLowerCase();
+                    let just_title = "NO";
+                    if (this.store.search_only_title)
+                        just_title = "YES";
+                    temp_params.only_title = just_title;
+                    this.store.axios_call_params = temp_params;
+                    this.store.get_projects();
+                }
+            }
         } 
     }
 </script>
@@ -222,8 +253,12 @@
                             </div>
                         </li>
                     </ul>
-                    <form v-if="store.current_page == 'not_yet'" class="d-flex">
-                        <input class="form-control me-2" type="search" placeholder="Cerca testo ..." aria-label="Search">
+                    <form v-if="store.current_page == 'projects_index'" class="d-flex position-relative" v-on:submit.prevent="search_text()">
+                        <h5 id="search_string_info" class="text-warning bg-dark border border-2 border-info rounded-2 px-3 py-2">
+                            {{ (store.search_only_title) ? "Ricerca abilitata per il solo titolo" : "Ricerca abilitata per titolo e descrizione" }}
+                            <h6 class="text-info mt-3">Switch disponibile in menu/Opzioni</h6>
+                        </h5>
+                        <input id="search_string" class="form-control me-2" v-model="store.search_string" type="search" placeholder="Cerca testo ..." aria-label="Search" required :minlength="store.search_str_min_length">
                         <button class="btn btn-outline-success" type="submit">Cerca</button>
                     </form>
                 </div>
@@ -254,5 +289,23 @@
                 }
             }
         }
+        form
+        {
+            #search_string_info
+            {
+                position: absolute;
+                top: 125%;
+                left: -25px;
+                display: none;
+            }
+            &:hover
+            {
+                #search_string_info
+                {
+                    display: block;
+                }
+            }
+        } 
+
     }
 </style>
