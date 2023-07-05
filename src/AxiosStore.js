@@ -25,6 +25,7 @@ export const store = reactive(
         backup_img_path         :   "../public/img/backup_img.png",
         side_panel_visible      :   true,
         projects_per_row        :   4, 
+        error_message           :   "MESSAGGIO DI PROVA",
 
         get_categories()
         {
@@ -57,6 +58,7 @@ export const store = reactive(
         get_projects()
         {
           this.projects_load_running = true;
+          this.projects = [];
           let params = this.axios_call_params;
           axios.get(`${this.api_url_root}/api/projects`, { params })
             .then( response =>
@@ -77,6 +79,7 @@ export const store = reactive(
         get_single_project(slug)
         {
           this.projects_load_running = true;
+          this.single_project = [];
           axios.get(`${this.api_url_root}/api/projects/${slug}`)
             .then( response =>
               {

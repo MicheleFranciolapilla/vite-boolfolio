@@ -4,6 +4,7 @@
   import Comp_PageManager from './components/Comp_PageManager.vue';
   import Comp_SidePanel from './components/Comp_SidePanel.vue';
   import Comp_Footer from './components/Comp_Footer.vue';
+  import Comp_ErrorViewer from './components/Comp_ErrorViewer.vue';
   export default
   {
     name        : "App",
@@ -12,7 +13,8 @@
                     Comp_Header,
                     Comp_PageManager,
                     Comp_SidePanel,
-                    Comp_Footer
+                    Comp_Footer,
+                    Comp_ErrorViewer
                   },
     data()
     {
@@ -48,6 +50,7 @@
 
 <template>
   <div id="front_end">
+    <Comp_ErrorViewer/>
     <div id="fixed_top_components" class="fixed-top">
       <Comp_Header/>
       <Comp_PageManager v-if="store.current_page == 'projects_index'" />
