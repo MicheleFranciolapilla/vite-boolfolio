@@ -54,10 +54,8 @@
      :api_url_root = "store.api_url_root"
      @rebounded_emit = "show_project" />
 
-     <div 
-      id="loading_failed" 
-      v-else>
-        <h2 class="text-warning text-center pt-5">Errore nel caricamento o collezione vuota!</h2>
+     <div id="loading_failed" v-else>
+        {{ store.invoke_error_viewer('Errore nel caricamento o collezione vuota!', 2000) }}
      </div>
 </template>
 

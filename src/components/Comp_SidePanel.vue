@@ -66,7 +66,14 @@
 
             switch_tech(index)
             {
-                this.store.technologies_filter[index] = !this.store.technologies_filter[index];
+                if ((this.store.tech_filters_amount() == 1) && (this.store.technologies_filter[index]))
+                {
+                    let wrong_unchecked = document.getElementById(`technology_${index+1}`);
+                    wrong_unchecked.checked = true;
+                    this.store.invoke_error_viewer("Non è possibile deselezionare tutte le tecnologie!", 2000);
+                }
+                else
+                    this.store.technologies_filter[index] = !this.store.technologies_filter[index];
             },
 
             get_fa_classes(icon_str)

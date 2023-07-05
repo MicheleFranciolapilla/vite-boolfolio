@@ -13,7 +13,7 @@
 </script>
 
 <template>
-    <div id="error_viewer" class="px-4 py-3 border border-3 border-danger rounded-3 bg-warning">
+    <div id="error_viewer" class="d-none px-4 py-3 border border-3 border-danger rounded-3 bg-warning">
         <h2 class="text-center text-danger">{{ store.error_message }}</h2>
     </div>
 </template>
@@ -27,6 +27,5 @@
         left: 50%;
         transform: translate(-50%, -50%);
         z-index: 1010;
-        display: none;
     }
 </style>

@@ -25,7 +25,7 @@ export const store = reactive(
         backup_img_path         :   "../public/img/backup_img.png",
         side_panel_visible      :   true,
         projects_per_row        :   4, 
-        error_message           :   "MESSAGGIO DI PROVA",
+        error_message           :   "",
 
         get_categories()
         {
@@ -105,4 +105,28 @@ export const store = reactive(
         {
             this[bool_var_ref] = !this[bool_var_ref];
         },
+
+        tech_filters_amount()
+        {
+          let amount = 0;
+          this.technologies_filter.forEach( tech =>
+            {
+              if (tech)
+                amount++;
+            });
+          console.log("amount: ",amount);
+          return amount;
+        },
+
+        invoke_error_viewer(message, delay)
+        {
+          let error_viewer = document.getElementById("error_viewer");
+          this.error_message = message;
+          error_viewer.classList.remove("d-none");
+          setTimeout(() =>
+          {
+            error_viewer.classList.add("d-none");
+            this.error_message = "";
+          }, delay);
+        }
     })
