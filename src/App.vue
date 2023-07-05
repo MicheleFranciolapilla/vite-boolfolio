@@ -7,7 +7,7 @@
   import Comp_ErrorViewer from './components/Comp_ErrorViewer.vue';
   export default
   {
-    name        : "App",
+    name        : 'App',
     components  : 
                   {
                     Comp_Header,
@@ -62,7 +62,7 @@
        id="side_panel_section" 
        class="col-2 ms-3 border border-3 border-info bg-light p-0 py-2"
        :class="(store.current_page == 'home') ? 'home_panel' : ''">
-        <Comp_SidePanel />
+        <Comp_SidePanel/>
       </section>
       <section id="router_views" class="col-8 px-5">
         <RouterView></RouterView>

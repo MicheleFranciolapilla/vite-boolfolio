@@ -189,35 +189,36 @@
                         <li 
                          v-for="(item) in menu_items" 
                          :key="item.item_id"
-                         :class="list_item_class_binder(item)">
+                         class="nav-item"
+                         :class="(item.item_type == 'dd') ? 'dropdown' : '' ">
                             <div v-if="is_menu_item_in_page(item)">
 
                                 <a 
                                  v-if="(current_item == 'js')" 
                                  v-on:click="item.item_js_method" 
                                  href="#"
-                                 :class="link_class_binder(item)">
+                                 class="nav-link">
                                     {{ item.item_name }}
                                 </a>
 
                                 <a 
                                  v-else-if="(current_item == 'anchor')" 
                                  :href="item.item_to"
-                                 :class="link_class_binder(item)">
+                                 class="nav-link">
                                     {{ item.item_name }}
                                 </a>
 
                                 <router-link 
                                  v-else-if="(current_item == 'route')"
                                  :to="{ name : item.item_to}"
-                                 :class="link_class_binder(item)">
+                                 class="nav-link">
                                     {{ item.item_name }}
                                 </router-link>
 
                                 <div v-else-if="(current_item == 'dd')">
                                     <a 
                                      href="#" 
-                                     :class="link_class_binder(item)" 
+                                     class="nav-link dropdown-toggle" 
                                      :id="item.item_dd_ref" 
                                      role="button" 
                                      data-bs-toggle="dropdown" 

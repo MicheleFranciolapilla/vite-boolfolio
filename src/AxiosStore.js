@@ -74,6 +74,7 @@ export const store = reactive(
                 this.projects_load_success = response.data.success;
                 if (!response.data.success)
                   this.projects_load_error = response.data.error;
+                console.log("response ",response);
               })
             .catch( error =>
               {
@@ -89,16 +90,12 @@ export const store = reactive(
           axios.get(`${this.api_url_root}/api/projects/${slug}`)
             .then( response =>
               {
-                this.single_project = response.data.project;
                 this.projects_load_running = false;
                 this.projects_load_success = response.data.success;
-                if (!response.data.success)
-                  this.projects_load_error = response.data.error;
-              })
-            .catch( error =>
-              {
-                this.projects_load_running = false;
-                this.projects_load_success = false;
+                if (response.data.success)
+                  this.single_project = response.data.project;
+                else
+                  this.projects_load_error = response.error;
               });
         },
 
@@ -122,7 +119,6 @@ export const store = reactive(
               if (tech)
                 amount++;
             });
-          console.log("amount: ",amount);
           return amount;
         },
 

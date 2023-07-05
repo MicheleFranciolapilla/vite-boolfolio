@@ -3,7 +3,7 @@
 
     export default
     {
-        name    : "Comp_PageManager",
+        name    : 'Comp_PageManager',
         data()
         {
             return  {
@@ -22,7 +22,7 @@
 </script>
 
 <template>
-    <dir id="page_manager" class="border border-2 border-dark bg-info px-2">
+    <div id="page_manager" class="border border-2 border-dark bg-info px-2">
         <div id="page_buttons" class="d-flex justify-content-start align-items-center column-gap-3 ps-1">
             <button id="btn_first_page" class="paging_btn btn btn-light btn-outline-primary" type="button"
              :class="(store.api_paging_info.api_current_page == 1) ? 'disabled' : ''"
@@ -55,7 +55,7 @@
         <div id="info_box">
             <span id="full_length_title" class="d-none px-2 text-primary border border-1 border-light rounded-2 bg-dark"></span>
         </div>
-    </dir>
+    </div>
 </template>
 
 <style scoped lang="scss">
@@ -65,6 +65,7 @@
     #page_manager
     {
         width: 100%;
+        margin-top: calc($upper_gap/2);
         height: $page_manager_h;
         display: flex;
         justify-content: space-between;
