@@ -227,7 +227,8 @@
                                     <ul class="dropdown-menu" :aria-labelledby="item.item_dd_ref">
                                         <li 
                                          v-for="sub_item in item.item_children"
-                                         :key="sub_item.item_id">
+                                         :key="sub_item.item_id"
+                                         :class="((sub_item.item_id == 201) && (store.current_page == 'projects_index')) ? 'disabled_with_info' : ''">
 
                                             <router-link 
                                              v-if="sub_item.item_type == 'route'" 
@@ -246,6 +247,15 @@
                                              :class="(!sub_item.active_in_pages.includes(store.current_page)) ? ('disabled') : ('')">
                                                 {{ set_list_item(sub_item.bool_var_ref, sub_item.name_if_true, sub_item.name_if_false) }}
                                             </a>
+
+                                            <div class="info_for_disabled_201 text-warning bg-dark border border-2 border-info rounded-2 px-3 py-2">
+                                                <h5>
+                                                    L'opzione è disabilitata all'interno di questa pagina.
+                                                </h5>
+                                                <h6 class="text-info mt-3">
+                                                    E' possibile ricaricare tutti i progetti mediante opportuno settaggio dei filtri nel pannello laterale.
+                                                </h6> 
+                                            </div>
 
                                         </li>
                                     </ul>
@@ -288,6 +298,28 @@
                     color: blue !important;
                 }
             }
+            .info_for_disabled_201
+            {
+                position: absolute;
+                top: 110%;
+                left: -25%;
+                width: 200%;
+                display: none;
+                z-index: 1010;
+            }
+            &.disabled_with_info
+            {
+                position: relative;
+                &:hover
+                {
+                    .info_for_disabled_201
+                    {
+                        display: block;
+                    }
+                }
+            }
+
+
         }
         form
         {

@@ -38,8 +38,8 @@
              :api_url_root = "store.api_url_root" />
     </div>
 
-     <div id="loading_failed" v-else>
-        <h2 class="text-warning text-center pt-5">Errore nel caricamento o progetto inesistente!</h2>
+    <div id="loading_failed" v-else>
+        {{ store.invoke_error_viewer('Errore nel caricamento o progetto inesistente!', 2000) }}
      </div>
 </template>
 
