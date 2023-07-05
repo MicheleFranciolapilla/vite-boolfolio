@@ -136,6 +136,20 @@
                 this.current_item = item.item_type;
                 return true;
             },
+
+            search_text()
+            {
+                let check_str = this.store.search_string.trim();
+                if (check_str.length < this.store.search_str_min_length)
+                    this.store.invoke_error_viewer(`Il testo da cercare deve avere una lunghezza minima di ${this.store.search_str_min_length} caratteri!`, 3000);
+                else
+                {
+                    let temp_params = { page : 1 };
+                    temp_params.search_str = this.store.search_string;
+                    this.store.axios_call_params = temp_params;
+                    this.store.get_projects();
+                }
+            }
         } 
     }
 </script>
@@ -222,8 +236,8 @@
                             </div>
                         </li>
                     </ul>
-                    <form v-if="store.current_page == 'not_yet'" class="d-flex">
-                        <input class="form-control me-2" type="search" placeholder="Cerca testo ..." aria-label="Search">
+                    <form v-if="store.current_page == 'projects_index'" class="d-flex" v-on:submit.prevent="search_text()">
+                        <input class="form-control me-2" v-model="store.search_string" type="search" placeholder="Cerca testo ..." aria-label="Search" required :minlength="store.search_str_min_length">
                         <button class="btn btn-outline-success" type="submit">Cerca</button>
                     </form>
                 </div>
