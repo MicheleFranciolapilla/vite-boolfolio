@@ -55,6 +55,7 @@
                                                                                 item_to         :   'projects_index',
                                                                                 active_in_pages :   [
                                                                                                         'home',
+                                                                                                        'projects_index',
                                                                                                         'projects_show'
                                                                                                     ]
                                                                             }
