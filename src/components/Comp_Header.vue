@@ -222,7 +222,7 @@
                             </div>
                         </li>
                     </ul>
-                    <form v-if="store.current_page == 'projects_index'" class="d-flex">
+                    <form v-if="store.current_page == 'not_yet'" class="d-flex">
                         <input class="form-control me-2" type="search" placeholder="Cerca testo ..." aria-label="Search">
                         <button class="btn btn-outline-success" type="submit">Cerca</button>
                     </form>

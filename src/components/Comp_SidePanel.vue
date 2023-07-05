@@ -50,8 +50,15 @@
                 }
 
                 // Logica di assegnazione del parametro API relativo alle tecnologie richieste:
-                
-                
+                // Si scansiona l'intero array delle tecnologie richieste e, a partire da una stringa vuota, si aggiunge in coda alla stessa lo slug della tecnologia richiesta (filtro su true), utilizzando il carattere "," come elemento di separazione.
+                let tech_str = "";
+                for (let i = 0; i < this.store.technologies_filter.length; i++)
+                    if (this.store.technologies_filter[i])
+                        tech_str += ",".concat(store.technologies[i].slug);
+                // Se, a fine ciclo, la stringa contiene almeno uno slug significa che si può generare una nuova chiave nel parametro per la API ma non senza aver prima rimosso la "," iniziale
+                if (tech_str != "")
+                    temp_params.tech_slugs = tech_str.substring(tech_str.indexOf(",") + 1);
+
                 // Impostazione del parametro finale per la API e chiamata alla stessa
                 this.store.axios_call_params = temp_params;
                 this.store.get_projects();
