@@ -8,6 +8,7 @@ export const store = reactive(
         single_project          :   {}, 
         projects_load_running   :   false,
         projects_load_success   :   false,
+        projects_load_error     :   "", 
         categories              :   [],
         // Valori per categories_filter:  0 = nessuna categoria; n+1 (n = categories.length) = tutte (default); 1......n come id in tabella
         categories_filter       :   -1,
@@ -70,7 +71,9 @@ export const store = reactive(
                 this.api_paging_info.api_current_page = response.data.projects.current_page;
                 this.api_paging_info.api_total_pages = response.data.projects.last_page;
                 this.projects_load_running = false;
-                this.projects_load_success = true;
+                this.projects_load_success = response.data.success;
+                if (!response.data.success)
+                  this.projects_load_error = response.data.error;
               })
             .catch( error =>
               {
@@ -88,7 +91,9 @@ export const store = reactive(
               {
                 this.single_project = response.data.project;
                 this.projects_load_running = false;
-                this.projects_load_success = true;
+                this.projects_load_success = response.data.success;
+                if (!response.data.success)
+                  this.projects_load_error = response.data.error;
               })
             .catch( error =>
               {

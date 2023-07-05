@@ -55,7 +55,7 @@
      @rebounded_emit = "show_project" />
 
      <div id="loading_failed" v-else>
-        {{ store.invoke_error_viewer('Errore nel caricamento o collezione vuota!', 2000) }}
+        {{ store.invoke_error_viewer(store.projects_load_error, 2000) }}
      </div>
 </template>
 
