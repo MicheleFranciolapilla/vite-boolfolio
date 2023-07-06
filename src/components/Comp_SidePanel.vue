@@ -1,8 +1,13 @@
 <script>
     import { store } from "../AxiosStore";
+    import Comp_OnLoading from "./Comp_OnLoading.vue";
     export default
     {
-        name    : "Comp_SidePanel",
+        name        : "Comp_SidePanel",
+        components  :
+        {
+            Comp_OnLoading
+        },
         data()
         {
             return  {
@@ -91,9 +96,19 @@
     <div id="side_panel" class="d-flex flex-column align-items-center row-gap-2 text-center">
         <h5 class="mb-2">Filtri</h5>
         <div id="filters_block" class="d-flex justify-content-between align-items-start px-1">
+
             <div id="categories_panel" class="ps-1">
-                <h6 class="text-start">Categoria:</h6>
-                <ul v-if="store.categories.length != 0" id="categories_list" class="d-flex flex-column align-items-start row-gap-2 px-2 py-1">
+                <h6 class="text-end">Categoria:</h6>
+
+                <Comp_OnLoading 
+                 v-if="store.categories_load_running"
+                 :hg_color = "'green'"
+                 :big = "false" />
+
+                <ul 
+                 v-else-if="((store.categories_load_success) && (store.categories.length != 0))" 
+                 id="categories_list" 
+                 class="d-flex flex-column align-items-start row-gap-2 px-2 py-1">
                     <li>
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="category_filter" id="category_all"
@@ -125,13 +140,25 @@
                         </div>
                     </li>
                 </ul>
+
                 <div v-else>
                     <span class="text-warning bg-danger p-2">Data error</span>
                 </div>
+
             </div>
+
             <div id="technologies_panel" class="pe-1">
                 <h6 class="text-start">Tecnologie:</h6>
-                <ul v-if="store.technologies.length != 0" id="technologies_list" class="d-flex flex-column align-items-start row-gap-2 px-2 py-1">
+
+                <Comp_OnLoading 
+                 v-if="store.techs_load_running"
+                 :hg_color = "'orange'"
+                 :big = "false" />
+
+                <ul 
+                 v-else-if="((store.techs_load_success) && (store.technologies.length != 0))" 
+                 id="technologies_list" 
+                 class="d-flex flex-column align-items-start row-gap-2 px-2 py-1">
                     <li 
                      v-for="(item, index) in store.technologies"
                      :key="'technology_' + index + 1">
@@ -147,9 +174,11 @@
                         </div>
                     </li>
                 </ul>
+
                 <div v-else>
                     <span class="text-warning bg-danger p-2">Data error</span>
                 </div>
+                
             </div>
         </div>
         <button id="btn_with_filters" class="btn btn-primary" type="button" v-on:click="get_filtered_projects()">Applica filtri</button>

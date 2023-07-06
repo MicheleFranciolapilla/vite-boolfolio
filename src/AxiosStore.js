@@ -4,58 +4,92 @@ import axios from 'axios';
 export const store = reactive(
     {
         session_start           :   true,
+        current_page            :   '',
+        api_url_root            :   'http://127.0.0.1:8000',
+
         projects                :   [],
         single_project          :   {}, 
         projects_load_running   :   false,
         projects_load_success   :   false,
         projects_load_error     :   "", 
-        categories              :   [],
-        // Valori per categories_filter:  0 = nessuna categoria; n+1 (n = categories.length) = tutte (default); 1......n come id in tabella
-        categories_filter       :   -1,
-        technologies            :   [], 
-        technologies_filter     :   [],
-        current_page            :   '',
-        api_url_root            :   'http://127.0.0.1:8000',
         api_paging_info         :   {
-                                        api_current_page    :   0,
-                                        api_total_pages     :   0
+                                      api_current_page    :   0,
+                                      api_total_pages     :   0
                                     },
         axios_call_params       :   {
-                                        page    :   1 
+                                      page    :   1 
                                     },
-        backup_img_path         :   "../public/img/backup_img.png",
-        side_panel_visible      :   true,
-        projects_per_row        :   4, 
         search_only_title       :   true,
         search_str_min_length   :   5,
         search_string           :   "",
+
+
+        categories              :   [],
+        categories_load_running :   false,
+        categories_load_success :   false,
+        categories_load_error   :   "",
+        // Valori per categories_filter:  0 = nessuna categoria; n+1 (n = categories.length) = tutte (default); 1......n come id in tabella
+        categories_filter       :   -1,
+
+        technologies            :   [], 
+        techs_load_running      :   false,
+        techs_load_success      :   false,
+        techs_load_error        :   "",
+        technologies_filter     :   [],
+
+
+        backup_img_path         :   "../public/img/backup_img.png",
+        side_panel_visible      :   true,
+        projects_per_row        :   4, 
         error_message           :   "",
 
         get_categories()
         {
-            axios.get(`${this.api_url_root}/api/categories`)
-                .then( response =>
-                  {
-                    this.categories = response.data.categories;
-                    this.categories_filter = this.categories.length + 1;
-                  })
-                .catch( error =>
-                  {
-                    console.log("errore con categories");
-                  });
+          this.categories_load_running = true;
+          this.categories = [];
+          axios.get(`${this.api_url_root}/api/categories`)
+            .then( response =>
+              {
+                this.categories_load_running = false;
+                this.categories_load_success = response.data.success;
+                if (response.data.success)
+                {
+                  this.categories = response.data.categories;
+                  this.categories_filter = this.categories.length + 1;
+                }
+                else
+                  this.categories_load_error = response.error;    
+              })
+            .catch( error =>
+              {
+                this.categories_load_running = false;
+                this.categories_load_success = false;
+                this.categories_load_error = response.error;    
+              });
         },
 
         get_technologies()
         {
+          this.techs_load_running = true;
+          this.technologies = [];
           axios.get(`${this.api_url_root}/api/technologies`)
             .then( response =>
               {
-                this.technologies = response.data.technologies;
-                this.init_tech_filter();
+                this.techs_load_running = false;
+                this.techs_load_success = response.data.success;
+                if (response.data.success)
+                {
+                  this.technologies = response.data.technologies;
+                  this.init_tech_filter();
+                }
+                else
+                  this.techs_load_error = response.error;
               })
             .catch( error =>
               {
-                console.log("errore con technologies");
+                this.techs_load_running = false;
+                this.techs_load_success = false;
+                this.techs_load_error = response.error;    
               });
         },
 
@@ -67,19 +101,22 @@ export const store = reactive(
           axios.get(`${this.api_url_root}/api/projects`, { params })
             .then( response =>
               {
-                this.projects = response.data.projects.data;
-                this.api_paging_info.api_current_page = response.data.projects.current_page;
-                this.api_paging_info.api_total_pages = response.data.projects.last_page;
                 this.projects_load_running = false;
                 this.projects_load_success = response.data.success;
-                if (!response.data.success)
-                  this.projects_load_error = response.data.error;
-                console.log("response ",response);
+                if (response.data.success)
+                {
+                  this.projects = response.data.projects.data;
+                  this.api_paging_info.api_current_page = response.data.projects.current_page;
+                  this.api_paging_info.api_total_pages = response.data.projects.last_page;
+                }
+                else
+                  this.projects_load_error = response.error;
               })
             .catch( error =>
               {
                 this.projects_load_running = false;
                 this.projects_load_success = false;
+                this.projects_load_error = response.error;
               });
         },
 
@@ -96,6 +133,12 @@ export const store = reactive(
                   this.single_project = response.data.project;
                 else
                   this.projects_load_error = response.error;
+              })
+            .catch( error =>
+              {
+                this.projects_load_running = false;
+                this.projects_load_success = false;
+                this.projects_load_error = response.error;
               });
         },
 

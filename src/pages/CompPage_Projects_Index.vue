@@ -1,12 +1,14 @@
 <script>
     import { store } from "../AxiosStore";
     import Comp_ViewAllProjects from "../components/Comp_ViewAllProjects.vue";
+    import Comp_OnLoading from "../components/Comp_OnLoading.vue";
     export default
     {
         name        :   "CompPage_Projects_Index",
         components  :
         {
-            Comp_ViewAllProjects
+            Comp_ViewAllProjects,
+            Comp_OnLoading
         },
         data()
         {
@@ -31,7 +33,6 @@
 
             show_project(project_slug)
             {
-                console.log("chiamata pagina show: ", project_slug);
                 this.$router.push({ name : 'projects_show', params : { slug : project_slug } });   
             }
         }
@@ -39,12 +40,11 @@
 </script>
 
 <template>
-    <div v-if="store.projects_load_running" id="on_loading">
-        <h2>
-            <i class="fa-solid fa-hourglass-start fa-spin-pulse"></i>
-        </h2>
-        <h3>Caricamento progetti in corso ...</h3>
-    </div>
+    <Comp_OnLoading 
+     v-if="store.projects_load_running"
+     :hg_color = "'white'"
+     :message = "'Caricamento progetti in corso ...'"
+     :big = "true" />
 
     <Comp_ViewAllProjects 
      v-else-if="store.projects_load_success"
@@ -54,16 +54,10 @@
      :api_url_root = "store.api_url_root"
      @rebounded_emit = "show_project" />
 
-     <div id="loading_failed" v-else>
+     <div v-else>
         {{ store.invoke_error_viewer(store.projects_load_error, 2000) }}
      </div>
 </template>
 
 <style scoped lang="scss">
-    #on_loading
-    {
-        padding-top: 33vh;
-        text-align: center;
-        color: blue;
-    }
 </style>

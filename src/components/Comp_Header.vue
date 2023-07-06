@@ -95,7 +95,29 @@
                                                                                 active_in_pages :   [
                                                                                                         'projects_index'
                                                                                                     ]
-                                                                            }
+                                                                            },
+                                                                            {
+                                                                                item_id         :   303,
+                                                                                item_name       :   'Refresh Categorie',
+                                                                                item_type       :   'js',
+                                                                                item_js_method()    {
+                                                                                                        store.get_categories();
+                                                                                                    },
+                                                                                active_in_pages :   [
+                                                                                                        'projects_index'
+                                                                                                    ]
+                                                                            },
+                                                                            {
+                                                                                item_id         :   304,
+                                                                                item_name       :   'Refresh Tecnologie',
+                                                                                item_type       :   'js',
+                                                                                item_js_method()    {
+                                                                                                        store.get_technologies();
+                                                                                                    },
+                                                                                active_in_pages :   [
+                                                                                                        'projects_index'
+                                                                                                    ]
+                                                                            },
                                                                         ]
                                                 },
                                                 {
@@ -222,6 +244,15 @@
                                              class="dropdown-item"
                                              :class="(!sub_item.active_in_pages.includes(store.current_page)) ? ('disabled') : ('')">
                                                 {{ set_list_item(sub_item.bool_var_ref, sub_item.name_if_true, sub_item.name_if_false) }}
+                                            </a>
+
+                                            <a 
+                                             v-else-if="(sub_item.item_type == 'js')" 
+                                             v-on:click="sub_item.item_js_method" 
+                                             href="#"
+                                             class="dropdown-item"
+                                             :class="(!sub_item.active_in_pages.includes(store.current_page)) ? ('disabled') : ('')">
+                                                {{ sub_item.item_name }}
                                             </a>
 
                                             <div class="info_for_disabled_201 text-warning bg-dark border border-2 border-info rounded-2 px-3 py-2">
