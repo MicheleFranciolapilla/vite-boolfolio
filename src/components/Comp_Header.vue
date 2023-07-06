@@ -7,7 +7,6 @@
         {
             return  {
                         store,
-                        current_item    :   null,
                         menu_items      :   [
                                                 {
                                                     // Indice dell'item
@@ -126,30 +125,6 @@
         },
         methods:
         {
-            list_item_class_binder(item)
-            {
-                let li_classes = "nav-item";
-                if (item.item_type == "dd")
-                    li_classes += " dropdown";
-                return li_classes;
-            },
-
-            link_class_binder(item)
-            {
-                let link_classes = "nav-link";
-                if (item.item_type == "dd")
-                    link_classes += " dropdown-toggle";
-                return link_classes;
-            },
-
-            is_menu_item_in_page(item)
-            {
-                if (!item.item_in_pages.includes(this.store.current_page))
-                 return false;
-                this.current_item = item.item_type;
-                return true;
-            },
-
             search_text()
             {
                 let check_str = this.store.search_string.trim();
@@ -191,10 +166,10 @@
                          :key="item.item_id"
                          class="nav-item"
                          :class="(item.item_type == 'dd') ? 'dropdown' : '' ">
-                            <div v-if="is_menu_item_in_page(item)">
+                            <div v-if="item.item_in_pages.includes(store.current_page)">
 
                                 <a 
-                                 v-if="(current_item == 'js')" 
+                                 v-if="(item.item_type == 'js')" 
                                  v-on:click="item.item_js_method" 
                                  href="#"
                                  class="nav-link">
@@ -202,20 +177,20 @@
                                 </a>
 
                                 <a 
-                                 v-else-if="(current_item == 'anchor')" 
+                                 v-else-if="(item.item_type == 'anchor')" 
                                  :href="item.item_to"
                                  class="nav-link">
                                     {{ item.item_name }}
                                 </a>
 
                                 <router-link 
-                                 v-else-if="(current_item == 'route')"
+                                 v-else-if="(item.item_type == 'route')"
                                  :to="{ name : item.item_to}"
                                  class="nav-link">
                                     {{ item.item_name }}
                                 </router-link>
 
-                                <div v-else-if="(current_item == 'dd')">
+                                <div v-else-if="(item.item_type == 'dd')">
                                     <a 
                                      href="#" 
                                      class="nav-link dropdown-toggle" 
