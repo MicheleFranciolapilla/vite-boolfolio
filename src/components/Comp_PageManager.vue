@@ -25,12 +25,12 @@
     <div id="page_manager" class="border border-2 border-dark bg-info px-2">
         <div id="page_buttons" class="d-flex justify-content-start align-items-center column-gap-3 ps-1">
             <button id="btn_first_page" class="paging_btn btn btn-light btn-outline-primary" type="button"
-             :class="(store.api_paging_info.api_current_page == 1) ? 'disabled' : ''"
+             :class="(store.api_paging_info.api_current_page <= 1) ? 'disabled' : ''"
              v-on:click="change_page(1)">
                 <i class="fa-solid fa-backward-fast"></i>
             </button>
             <button id="btn_prev_page" class="paging_btn btn btn-light btn-outline-primary" type="button"
-             :class="(store.api_paging_info.api_current_page == 1) ? 'disabled' : ''"
+             :class="(store.api_paging_info.api_current_page <= 1) ? 'disabled' : ''"
              v-on:click="change_page(store.api_paging_info.api_current_page - 1)">
                 <i class="fa-solid fa-caret-left"></i>
             </button>

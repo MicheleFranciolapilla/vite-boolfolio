@@ -101,7 +101,7 @@
                                                                                 item_name       :   'Refresh Categorie',
                                                                                 item_type       :   'js',
                                                                                 item_js_method()    {
-                                                                                                        store.get_categories();
+                                                                                                        store.get_categories(true);
                                                                                                     },
                                                                                 active_in_pages :   [
                                                                                                         'projects_index'
@@ -112,12 +112,37 @@
                                                                                 item_name       :   'Refresh Tecnologie',
                                                                                 item_type       :   'js',
                                                                                 item_js_method()    {
-                                                                                                        store.get_technologies();
+                                                                                                        store.get_technologies(true);
                                                                                                     },
                                                                                 active_in_pages :   [
                                                                                                         'projects_index'
                                                                                                     ]
                                                                             },
+                                                                        ]
+                                                },
+                                                {
+                                                    item_id         :   4,
+                                                    item_name       :   'Layout',
+                                                    item_type       :   'dd',
+                                                    item_dd_ref     :   'layout_dropdown',
+                                                    item_in_pages   :   [
+                                                                            'home',
+                                                                            'projects_index',
+                                                                            'projects_show'
+                                                                        ],
+                                                    item_children   :   [
+                                                                            {
+                                                                                item_id         :   401,
+                                                                                item_name       :   'Progetti per riga',
+                                                                                item_type       :   'js',
+                                                                                item_js_method()    {
+                                                                                                        store.get_categories();
+                                                                                                    },                              
+                                                                                active_in_pages :   [
+                                                                                                        'projects_index',
+                                                                                                        'projects_show'
+                                                                                                    ]
+                                                                            }
                                                                         ]
                                                 },
                                                 {
@@ -226,8 +251,8 @@
                                         <li 
                                          v-for="sub_item in item.item_children"
                                          :key="sub_item.item_id"
-                                         :class="((sub_item.item_id == 201) && (store.current_page == 'projects_index')) ? 'disabled_with_info' : ''">
-
+                                         :class="{ 'disabled_with_info' : ((store.current_page == 'projects_index') && (sub_item.item_id == 201)),
+                                                    'refresh_with_info' : ((store.current_page == 'projects_index') && ((sub_item.item_id == 303) || (sub_item.item_id == 304))) }">
                                             <router-link 
                                              v-if="sub_item.item_type == 'route'" 
                                              :to="{ name : sub_item.item_to }" 
@@ -260,7 +285,17 @@
                                                     L'opzione è disabilitata all'interno di questa pagina.
                                                 </h5>
                                                 <h6 class="text-info mt-3">
-                                                    E' possibile ricaricare tutti i progetti mediante opportuno settaggio dei filtri nel pannello laterale.
+                                                    E' possibile ricaricare tutti i progetti mediante opportuno settaggio dei filtri nel pannello laterale, oppure tornando alla Home Page.
+                                                </h6> 
+                                            </div>
+
+                                            <div class="info_for_refresh text-warning bg-dark border border-2 border-info rounded-2 px-3 py-2">
+                                                <h5>
+                                                    Selezionare questa opzione se si ritiene che i dati relativi alle {{ (sub_item.item_id == 303) ? 'categorie' : 'tecnologie' }} nel database possano essere stati modificati.
+                                                </h5>
+                                                <hr>
+                                                <h6 class="text-info mt-3">
+                                                    Il refresh aggiornerà i dati relativi alle {{ (sub_item.item_id == 303) ? 'categorie' : 'tecnologie' }} e ricaricherà tutti i progetti, impaginati e non filtrati.
                                                 </h6> 
                                             </div>
 
@@ -305,7 +340,7 @@
                     color: blue !important;
                 }
             }
-            .info_for_disabled_201
+            .info_for_disabled_201, .info_for_refresh
             {
                 position: absolute;
                 top: 110%;
@@ -320,6 +355,17 @@
                 &:hover
                 {
                     .info_for_disabled_201
+                    {
+                        display: block;
+                    }
+                }
+            }
+            &.refresh_with_info
+            {
+                position: relative;
+                &:hover
+                {
+                    .info_for_refresh
                     {
                         display: block;
                     }

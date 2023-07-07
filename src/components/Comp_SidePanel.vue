@@ -98,7 +98,7 @@
         <div id="filters_block" class="d-flex justify-content-between align-items-start px-1">
 
             <div id="categories_panel" class="ps-1">
-                <h6 class="text-end">Categoria:</h6>
+                <h6 class="text-end pe-5">Categoria:</h6>
 
                 <Comp_OnLoading 
                  v-if="store.categories_load_running"

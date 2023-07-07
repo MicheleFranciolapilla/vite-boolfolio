@@ -43,53 +43,69 @@ export const store = reactive(
         projects_per_row        :   4, 
         error_message           :   "",
 
-        get_categories()
+        get_categories(refresh = false)
         {
           this.categories_load_running = true;
           this.categories = [];
           axios.get(`${this.api_url_root}/api/categories`)
             .then( response =>
               {
-                this.categories_load_running = false;
                 this.categories_load_success = response.data.success;
-                if (response.data.success)
+                if (this.categories_load_success)
                 {
                   this.categories = response.data.categories;
                   this.categories_filter = this.categories.length + 1;
+                  if (refresh)
+                  {
+                    this.axios_call_params = { page : 1 };
+                    this.init_projects_data;
+                    this.get_projects();
+                  }
                 }
                 else
-                  this.categories_load_error = response.error;    
+                {
+                  console.log("Errore direttamente dentro il .then con success false");
+                }
+                this.categories_load_running = false;
               })
             .catch( error =>
               {
+                this.categories_load_success = error.response.data.success;
+                this.categories_load_error = error.response.data.error_msg;
                 this.categories_load_running = false;
-                this.categories_load_success = false;
-                this.categories_load_error = response.error;    
               });
         },
 
-        get_technologies()
+        get_technologies(refresh = false)
         {
           this.techs_load_running = true;
           this.technologies = [];
           axios.get(`${this.api_url_root}/api/technologies`)
             .then( response =>
               {
-                this.techs_load_running = false;
                 this.techs_load_success = response.data.success;
-                if (response.data.success)
+                if (this.techs_load_success)
                 {
                   this.technologies = response.data.technologies;
                   this.init_tech_filter();
+                  if (refresh)
+                  {
+                    this.axios_call_params = { page : 1 };
+                    this.init_projects_data();
+                    this.get_projects();
+                  }
                 }
                 else
-                  this.techs_load_error = response.error;
+                {
+                  console.log("Errore direttamente dentro il .then con success false");
+                }
+                this.techs_load_running = false;
               })
             .catch( error =>
               {
-                this.techs_load_running = false;
-                this.techs_load_success = false;
-                this.techs_load_error = response.error;    
+                this.techs_load_success = error.response.data.success;
+                this.techs_load_error = error.response.data.error_msg;
+                this.techs_load_running = false;              
               });
         },
 
@@ -101,45 +117,59 @@ export const store = reactive(
           axios.get(`${this.api_url_root}/api/projects`, { params })
             .then( response =>
               {
-                this.projects_load_running = false;
                 this.projects_load_success = response.data.success;
-                if (response.data.success)
+                console.log("response.data: ",response.data);
+                if (this.projects_load_success)
                 {
                   this.projects = response.data.projects.data;
                   this.api_paging_info.api_current_page = response.data.projects.current_page;
                   this.api_paging_info.api_total_pages = response.data.projects.last_page;
                 }
                 else
-                  this.projects_load_error = response.error;
+                {
+                  console.log("Errore direttamente dentro il .then con success false");
+                }
+                this.projects_load_running = false;
               })
             .catch( error =>
               {
+                console.log("error occurred: ", error.response.data);
+                this.projects_load_success = error.response.data.success;
+                this.projects_load_error = error.response.data.error_msg;
                 this.projects_load_running = false;
-                this.projects_load_success = false;
-                this.projects_load_error = response.error;
               });
         },
 
         get_single_project(slug)
         {
           this.projects_load_running = true;
-          this.single_project = [];
+          this.single_project = {};
           axios.get(`${this.api_url_root}/api/projects/${slug}`)
             .then( response =>
               {
-                this.projects_load_running = false;
                 this.projects_load_success = response.data.success;
-                if (response.data.success)
+                if (this.projects_load_success)
                   this.single_project = response.data.project;
                 else
-                  this.projects_load_error = response.error;
+                {
+                  console.log("Errore direttamente dentro il .then con success false");
+                }
+                  this.projects_load_running = false;
               })
             .catch( error =>
               {
+                this.projects_load_success = error.response.data.success;
+                this.projects_load_error = error.response.data.error_msg;                
                 this.projects_load_running = false;
-                this.projects_load_success = false;
-                this.projects_load_error = response.error;
               });
+        },
+
+        init_projects_data()
+        {
+          this.projects = [];
+          this.single_project = {};
+          this.api_paging_info.api_current_page = 0;
+          this.api_paging_info.api_total_pages = 0;
         },
 
         init_tech_filter()
