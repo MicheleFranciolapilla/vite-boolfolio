@@ -2,7 +2,7 @@
     import { store } from "../AxiosStore";
     export default
     {
-        name    : "Comp_Header",
+        name        : "Comp_Header",
         data()
         {
             return  {
@@ -27,8 +27,9 @@
                                                     item_id         :   1,
                                                     item_name       :   'About',
                                                     item_type       :   'js',
-                                                    item_js_method()    {
-                                                                            store.about();
+                                                    item_js_method  :   ()  =>   
+                                                                        {
+                                                                            this.about();
                                                                         },
                                                     item_in_pages   :   [
                                                                             'home',
@@ -133,14 +134,15 @@
                                                     item_children   :   [
                                                                             {
                                                                                 item_id         :   401,
-                                                                                item_name       :   'Progetti per riga',
-                                                                                item_type       :   'js',
-                                                                                item_js_method()    {
-                                                                                                        store.get_categories();
-                                                                                                    },                              
+                                                                                item_type       :   'direct_input',
+                                                                                direct_label    :   "Progetti per riga...",
+                                                                                direct_id       :   "ProjectsXRow",
+                                                                                direct_min      :   1,
+                                                                                direct_max      :   10,
+                                                                                direct_step     :   1,
+                                                                                direct_data     :   'projects_per_row',
                                                                                 active_in_pages :   [
-                                                                                                        'projects_index',
-                                                                                                        'projects_show'
+                                                                                                        'projects_index'
                                                                                                     ]
                                                                             }
                                                                         ]
@@ -172,6 +174,11 @@
         },
         methods:
         {
+            about()
+            {
+
+            },
+
             search_text()
             {
                 let check_str = this.store.search_string.trim();
@@ -188,6 +195,12 @@
                     this.store.axios_call_params = temp_params;
                     this.store.get_projects();
                 }
+            },
+
+            manage_direct_input(direct_data, direct_id)
+            {
+                let direct_input = document.getElementById(direct_id);
+                this.store[direct_data] = direct_input.value;
             }
         } 
     }
@@ -280,6 +293,29 @@
                                                 {{ sub_item.item_name }}
                                             </a>
 
+                                            <div 
+                                             v-else-if="(sub_item.item_type == 'direct_input')"
+                                             class="d-flex justify-content-between column-gap-2 direct_input_div">
+                                                <span 
+                                                 class="dropdown-item"
+                                                 :class="(!sub_item.active_in_pages.includes(store.current_page)) ? ('disabled') : ('')">
+                                                    {{ sub_item.direct_label }}
+                                                </span>
+                                                    
+                                                <input 
+                                                 type="number" 
+                                                 class="dropdown-item d-inline-block p-0 me-2" 
+                                                 style="min-width: 50px;"
+                                                 :id="sub_item.direct_id"
+                                                 :class="(!sub_item.active_in_pages.includes(store.current_page)) ? ('disabled') : ('')"
+                                                 :min="sub_item.direct_min"
+                                                 :max="sub_item.direct_max"
+                                                 :step="sub_item.direct_step"
+                                                 :value="store[sub_item.direct_data]"
+                                                 v-on:keydown.prevent=""
+                                                 v-on:change="manage_direct_input(sub_item.direct_data, sub_item.direct_id)">
+                                            </div>
+
                                             <div class="info_for_disabled_201 text-warning bg-dark border border-2 border-info rounded-2 px-3 py-2">
                                                 <h5>
                                                     L'opzione è disabilitata all'interno di questa pagina.
@@ -371,8 +407,14 @@
                     }
                 }
             }
-
-
+            .direct_input_div *
+            {
+                &:active
+                {
+                    background-color: transparent !important;
+                    color: black;
+                }
+            }
         }
         form
         {
