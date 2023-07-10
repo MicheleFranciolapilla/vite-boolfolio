@@ -81,6 +81,7 @@ export const store = reactive(
                   if (refresh)
                   {
                     this.axios_call_params = { page : 1 };
+                    this.init_tech_filter();
                     this.init_projects_data;
                     this.get_projects();
                   }
@@ -118,6 +119,7 @@ export const store = reactive(
                   if (refresh)
                   {
                     this.axios_call_params = { page : 1 };
+                    this.categories_filter = this.categories.length + 1;
                     this.init_projects_data();
                     this.get_projects();
                   }
