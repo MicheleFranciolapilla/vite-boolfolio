@@ -5,6 +5,7 @@
   import Comp_SidePanel from './components/Comp_SidePanel.vue';
   import Comp_Footer from './components/Comp_Footer.vue';
   import Comp_ErrorViewer from './components/Comp_ErrorViewer.vue';
+  import Comp_OnLoading from './components/Comp_OnLoading.vue';
   export default
   {
     name        : 'App',
@@ -14,7 +15,8 @@
                     Comp_PageManager,
                     Comp_SidePanel,
                     Comp_Footer,
-                    Comp_ErrorViewer
+                    Comp_ErrorViewer,
+                    Comp_OnLoading
                   },
     data()
     {
@@ -25,15 +27,16 @@
     mounted()
     {
       if (this.store.session_start)
-        this.initialize_data();
+          this.initialize_data();
     },
     methods:
     {
       initialize_data()
       {
-        this.store.session_start = false;
+        this.store.get_page_size();
         this.store.get_categories();
         this.store.get_technologies();
+        this.store.session_start = false;
       },
 
       initialize_tech_filter()
@@ -44,12 +47,18 @@
           this.store.technologies_filter.push(true);
         }
       },
+
+      set_first_api_calls_done()
+      {
+        this.store.first_api_calls_done = true;
+      }
     }
   }
 </script>
 
 <template>
-  <div id="front_end">
+  <div id="front_end"
+   v-if="store.first_api_calls_done">
     <Comp_ErrorViewer/>
     <div id="fixed_top_components" class="fixed-top">
       <Comp_Header/>
@@ -70,6 +79,27 @@
     </main>
     <Comp_Footer/>
   </div>
+  <div v-else id="on_first_api_calls">
+    <Comp_ErrorViewer/>
+    <Comp_OnLoading 
+     v-if=" store.first_action_running || 
+            store.categories_load_running ||
+            store.techs_load_running"
+     :hg_color="'blue'"
+     :message="'Tentativo di prima connessione al server in corso...'"
+     :big="true" />
+    <div id="some_api_error"
+     v-else-if="  store.first_action_error ||
+                  !store.categories_load_success ||
+                  !store.techs_load_success">
+      {{ store.quit_with_api_error() }}
+    </div>
+    <div id="no_api_error" v-else>
+      {{ set_first_api_calls_done() }}
+    </div>
+  </div>
+
+
 </template>
 
 <style lang="scss">

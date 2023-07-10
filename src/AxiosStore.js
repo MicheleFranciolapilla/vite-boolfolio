@@ -4,6 +4,7 @@ import axios from 'axios';
 export const store = reactive(
     {
         session_start           :   true,
+        first_api_calls_done    :   false,
         current_page            :   '',
         api_url_root            :   'http://127.0.0.1:8000',
 
@@ -37,11 +38,33 @@ export const store = reactive(
         techs_load_error        :   "",
         technologies_filter     :   [],
 
-
+        page_size               :   0,
+        // Si setta a true la variabile seguente, per pura precauzione
+        first_action_running    :   true,
+        first_action_error      :   false, 
         backup_img_path         :   "../public/img/backup_img.png",
         side_panel_visible      :   true,
-        projects_per_row        :   4, 
+        projects_per_row        :   8, 
         error_message           :   "",
+
+        get_page_size()
+        {
+          this.first_action_running = true;
+          this.first_action_error = false;
+          axios.get(`${this.api_url_root}/api/pagination`)
+            .then( response =>
+              {
+                this.first_action_error = !response.data.success;
+                if (!this.first_action_error)
+                  this.page_size = response.data.page_size;
+                this.first_action_running = false;
+              })
+            .catch( error =>
+              {
+                this.first_action_error = true;
+                this.first_action_running = false;
+              });
+        },
 
         get_categories(refresh = false)
         {
@@ -70,8 +93,12 @@ export const store = reactive(
               })
             .catch( error =>
               {
-                this.categories_load_success = error.response.data.success;
-                this.categories_load_error = error.response.data.error_msg;
+                this.categories_load_success = false;
+                if (error && 
+                    error.response && 
+                    error.response.data &&
+                    typeof error.response.data.error_msg !== undefined)
+                  this.categories_load_error = error.response.data.error_msg;
                 this.categories_load_running = false;
               });
         },
@@ -103,8 +130,12 @@ export const store = reactive(
               })
             .catch( error =>
               {
-                this.techs_load_success = error.response.data.success;
-                this.techs_load_error = error.response.data.error_msg;
+                this.techs_load_success = false;
+                if (error && 
+                    error.response && 
+                    error.response.data &&
+                    typeof error.response.data.error_msg !== undefined)
+                  this.techs_load_error = error.response.data.error_msg;
                 this.techs_load_running = false;              
               });
         },
@@ -195,7 +226,7 @@ export const store = reactive(
           return amount;
         },
 
-        invoke_error_viewer(message, delay)
+        invoke_error_viewer(message, delay, quit_page = false)
         {
           let error_viewer = document.getElementById("error_viewer");
           this.error_message = message;
@@ -204,6 +235,13 @@ export const store = reactive(
           {
             error_viewer.classList.add("d-none");
             this.error_message = "";
+            if (quit_page)
+              window.close();
           }, delay);
-        }
+        },
+
+        quit_with_api_error()
+        {
+          this.invoke_error_viewer("Errore nella connessione al server. La pagina verrà abortita tra 5 secondi.", 5000, true);
+        },
     })
