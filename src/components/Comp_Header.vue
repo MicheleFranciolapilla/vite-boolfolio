@@ -135,12 +135,32 @@
                                                                             {
                                                                                 item_id         :   401,
                                                                                 item_type       :   'direct_input',
+                                                                                item_special    :   false,
                                                                                 direct_label    :   "Progetti per riga...",
                                                                                 direct_id       :   "ProjectsXRow",
                                                                                 direct_min      :   1,
-                                                                                direct_max      :   10,
+                                                                                direct_max      :   store.page_size,
                                                                                 direct_step     :   1,
                                                                                 direct_data     :   'projects_per_row',
+                                                                                active_in_pages :   [
+                                                                                                        'projects_index'
+                                                                                                    ]
+                                                                            },
+                                                                            {
+                                                                                item_id         :   402,
+                                                                                item_type       :   'direct_input',
+                                                                                item_special    :   true, 
+                                                                                item_js_method()    {
+                                                                                                        store.set_new_page_size()
+                                                                                                    },
+                                                                                message_on_btn  :   "Al click verranno ricaricati tutti i progetti, non filtrati e con il nuovo valore di impaginazione.", 
+                                                                                direct_label    :   "Progetti per pagina...",
+                                                                                direct_id       :   "ProjectsXPage",
+                                                                                direct_min      :   1,
+                                                                                direct_max      :   10,
+                                                                                direct_step     :   1,
+                                                                                direct_data     :   'new_page_size',
+                                                                                ref_data        :   'page_size', 
                                                                                 active_in_pages :   [
                                                                                                         'projects_index'
                                                                                                     ]
@@ -197,7 +217,7 @@
                 }
             },
 
-            manage_direct_input(direct_data, direct_id)
+            manage_direct_input(direct_data, direct_id, special)
             {
                 let direct_input = document.getElementById(direct_id);
                 this.store[direct_data] = direct_input.value;
@@ -264,8 +284,9 @@
                                         <li 
                                          v-for="sub_item in item.item_children"
                                          :key="sub_item.item_id"
-                                         :class="{ 'disabled_with_info' : ((store.current_page == 'projects_index') && (sub_item.item_id == 201)),
+                                         :class="{  'disabled_with_info': ((store.current_page == 'projects_index') && (sub_item.item_id == 201)),
                                                     'refresh_with_info' : ((store.current_page == 'projects_index') && ((sub_item.item_id == 303) || (sub_item.item_id == 304))) }">
+
                                             <router-link 
                                              v-if="sub_item.item_type == 'route'" 
                                              :to="{ name : sub_item.item_to }" 
@@ -305,7 +326,7 @@
                                                 <input 
                                                  type="number" 
                                                  class="dropdown-item d-inline-block p-0 me-2" 
-                                                 style="min-width: 50px;"
+                                                 style="width: 50px;"
                                                  :id="sub_item.direct_id"
                                                  :class="(!sub_item.active_in_pages.includes(store.current_page)) ? ('disabled') : ('')"
                                                  :min="sub_item.direct_min"
@@ -313,7 +334,7 @@
                                                  :step="sub_item.direct_step"
                                                  :value="store[sub_item.direct_data]"
                                                  v-on:keydown.prevent=""
-                                                 v-on:change="manage_direct_input(sub_item.direct_data, sub_item.direct_id)">
+                                                 v-on:change="manage_direct_input(sub_item.direct_data, sub_item.direct_id, sub_item.special)">
                                             </div>
 
                                             <div class="info_for_disabled_201 text-warning bg-dark border border-2 border-info rounded-2 px-3 py-2">

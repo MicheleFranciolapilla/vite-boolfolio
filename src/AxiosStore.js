@@ -39,6 +39,8 @@ export const store = reactive(
         technologies_filter     :   [],
 
         page_size               :   0,
+        max_page_size           :   0,
+        new_pege_size           :   0, 
         // Si setta a true la variabile seguente, per pura precauzione
         first_action_running    :   true,
         first_action_error      :   false, 
@@ -56,7 +58,13 @@ export const store = reactive(
               {
                 this.first_action_error = !response.data.success;
                 if (!this.first_action_error)
+                {
+                  this.max_page_size = response.data.max_page_size;
                   this.page_size = response.data.page_size;
+                  this.new_page_size = this.page_size;
+                  if (this.projects_per_row > this.page_size)
+                    this.projects_per_row = this.page_size;
+                }
                 this.first_action_running = false;
               })
             .catch( error =>
@@ -64,6 +72,11 @@ export const store = reactive(
                 this.first_action_error = true;
                 this.first_action_running = false;
               });
+        },
+
+        set_new_page_size()
+        {
+
         },
 
         get_categories(refresh = false)
